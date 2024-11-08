@@ -1,0 +1,11 @@
+<h1>Sleep Schedules</h1>
+<a href="{% url 'schedule_create' %}">Add New Schedule</a>
+<ul>
+    {% for schedule in schedules %}
+        <li>
+            {{ schedule.user_name }} - Sleep Time: {{ schedule.sleep_time }} | Wake Time: {{ schedule.wake_time }} 
+            - <a href="{% url 'schedule_update' schedule.id %}">Edit</a> | 
+            <a href="{% url 'schedule_delete' schedule.id %}">Delete</a>
+        </li>
+    {% endfor %}
+</ul>

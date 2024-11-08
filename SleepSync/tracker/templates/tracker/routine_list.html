@@ -1,0 +1,13 @@
+<!-- SleepSync/tracker/templates/tracker/routine_list.html -->
+
+<h2>Relaxation Routine List</h2>
+<a href="{% url 'routine_create' %}">Add New Routine</a>
+<ul>
+    {% for routine in routines %}
+        <li>
+            {{ routine.routineType }} - {{ routine.userID.name }}
+            <a href="{% url 'routine_update' routine.pk %}">Edit</a>
+            <a href="{% url 'routine_delete' routine.pk %}">Delete</a>
+        </li>
+    {% endfor %}
+</ul>

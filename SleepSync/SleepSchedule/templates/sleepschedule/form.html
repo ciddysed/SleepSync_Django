@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sleep Schedule Form</title>
+</head>
+<body>
+    <h1>{{ form.instance.id|yesno:"Edit Schedule,Add New Schedule" }}</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{{ form.instance.id|yesno:"Update,Create" }}</button>
+    </form>
+
+    <a href="{% url 'schedule_list' %}">Back to Schedule List</a>
+</body>
+</html>
