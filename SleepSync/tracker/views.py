@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .models import ProgressTracking, SleepTrack
 from .forms import ProgressTrackingForm, SleepTrackForm
 
+def landing_page(request):
+    return render(request, 'tracker/landing_page.html')
+
 # Progress Tracking CRUD
 def progress_list(request):
     progress = ProgressTracking.objects.all()

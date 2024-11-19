@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('', views.landing_page, name='landing_page'),
     path('progress/', views.progress_list, name='progress_list'),
     path('progress/create/', views.progress_create, name='progress_create'),
     path('progress/update/<int:pk>/', views.progress_update, name='progress_update'),
