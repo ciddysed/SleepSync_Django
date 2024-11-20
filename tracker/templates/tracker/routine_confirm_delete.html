@@ -1,0 +1,9 @@
+<!-- SleepSync/tracker/templates/tracker/routine_confirm_delete.html -->
+
+<h2>Delete Routine</h2>
+<p>Are you sure you want to delete {{ routine.routineType }} for {{ routine.userID.name }}?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirm</button>
+    <a href="{% url 'routine_list' %}">Cancel</a>
+</form>

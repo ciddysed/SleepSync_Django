@@ -1,0 +1,9 @@
+<!-- SleepSync/tracker/templates/tracker/user_form.html -->
+
+<h2>{% if form.instance.pk %}Edit User{% else %}Add New User{% endif %}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+    <a href="{% url 'user_list' %}">Cancel</a>
+</form>

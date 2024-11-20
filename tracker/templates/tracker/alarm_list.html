@@ -1,0 +1,11 @@
+<h2>Smart Alarm List</h2>
+<a href="{% url 'alarm_create' %}">Add New Alarm</a>
+<ul>
+    {% for alarm in alarms %}
+        <li>
+            {{ alarm.alarmTime }}
+            <a href="{% url 'alarm_update' alarm.pk %}">Edit</a>
+            <a href="{% url 'alarm_delete' alarm.pk %}">Delete</a>
+        </li>
+    {% endfor %}
+</ul>

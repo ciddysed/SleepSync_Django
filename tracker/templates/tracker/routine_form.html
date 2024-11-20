@@ -1,0 +1,9 @@
+<!-- SleepSync/tracker/templates/tracker/routine_form.html -->
+
+<h2>{% if form.instance.pk %}Edit Routine{% else %}Add New Routine{% endif %}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+    <a href="{% url 'routine_list' %}">Cancel</a>
+</form>
