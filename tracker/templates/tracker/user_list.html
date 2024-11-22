@@ -158,12 +158,12 @@
 <body>
     <div class="stars"></div>
     <div class="container">
-        <div class="logo">
+        <button class="logo" onclick="window.location.href='{% url 'landing_page' %}'">
             <svg viewBox="0 0 24 24">
                 <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
             </svg>
             <span class="logo-text">SleepSync</span>
-        </div>
+        </button>
         
         <h2>User List</h2>
         <a href="{% url 'user_create' %}" class="create-btn">Add New User</a>

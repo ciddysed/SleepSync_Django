@@ -240,41 +240,130 @@ from datetime import datetime
 def get_sleep_tips(wake_time):
     wake_hour = wake_time.hour
 
+    # Early Morning (5 AM - 9 AM)
     if 5 <= wake_hour <= 9:
-        return (
-            "Sleep Schedule: Aim to sleep early, between 9:00 PM and 10:30 PM, to ensure 7-9 hours of rest. "
-            "Environment: Use blackout curtains and minimize noise to promote deep sleep. "
-            "Wind-down Routine: Avoid bright screens and stimulating activities an hour before bedtime. "
-            "Diet: Avoid caffeine after mid-afternoon. "
-            "Exercise: Morning exercise can help regulate your circadian rhythm."
-        )
+        return {
+            'schedule': {
+                'title': 'Optimal Sleep Schedule',
+                'icon': 'clock',
+                'tips': ['Aim to sleep early, between 9:00 PM and 10:30 PM', 'Ensure 7-9 hours of quality rest']
+            },
+            'environment': {
+                'title': 'Sleep Environment',
+                'icon': 'moon',
+                'tips': ['Use blackout curtains', 'Minimize ambient noise', 'Keep room temperature cool']
+            },
+            'routine': {
+                'title': 'Evening Routine',
+                'icon': 'book',
+                'tips': ['Avoid bright screens an hour before bed', 'Limit stimulating activities']
+            },
+            'diet': {
+                'title': 'Dietary Guidelines',
+                'icon': 'coffee',
+                'tips': ['Avoid caffeine after mid-afternoon', 'Light dinner 2-3 hours before bed']
+            },
+            'exercise': {
+                'title': 'Exercise Recommendations',
+                'icon': 'activity',
+                'tips': ['Morning exercise helps regulate circadian rhythm', 'Complete workouts at least 3 hours before bed']
+            }
+        }
+
+    # Late Morning (11 AM - 1 PM)
     elif 11 <= wake_hour <= 13:
-        return (
-            "Sleep Schedule: Sleep between midnight and 7:00 AM for consistency. Avoid late-night caffeine. "
-            "Environment: Keep the room dark and quiet for optimal rest. "
-            "Wind-down Routine: Wind down your day with relaxing activities like reading or meditating."
-        )
+        return {
+            'schedule': {
+                'title': 'Sleep Schedule',
+                'icon': 'clock',
+                'tips': ['Sleep between midnight and 7:00 AM', 'Maintain consistent sleep times']
+            },
+            'environment': {
+                'title': 'Room Setup',
+                'icon': 'moon',
+                'tips': ['Keep the room dark and quiet', 'Use white noise if needed']
+            },
+            'routine': {
+                'title': 'Relaxation Routine',
+                'icon': 'book',
+                'tips': ['Read before bed', 'Practice meditation or deep breathing']
+            }
+        }
+
+    # Afternoon (2 PM - 5 PM)
     elif 14 <= wake_hour <= 17:
-        return (
-            "Sleep Schedule: Aim for 7-8 hours of sleep, starting from midnight. Avoid naps too late in the day. "
-            "Environment: Make sure your room is cool and dark. "
-            "Diet: Light meals are best before bedtime, and avoid heavy or spicy foods."
-        )
+        return {
+            'schedule': {
+                'title': 'Sleep Duration',
+                'icon': 'clock',
+                'tips': ['Aim for 7-8 hours of sleep', 'Start bedtime routine from midnight', 'Avoid late afternoon naps']
+            },
+            'environment': {
+                'title': 'Room Conditions',
+                'icon': 'moon',
+                'tips': ['Maintain cool room temperature', 'Ensure complete darkness']
+            },
+            'diet': {
+                'title': 'Evening Diet',
+                'icon': 'coffee',
+                'tips': ['Choose light meals before bed', 'Avoid spicy and heavy foods']
+            }
+        }
+
+    # Evening (6 PM - 9 PM)
     elif 18 <= wake_hour <= 21:
-        return (
-            "Sleep Schedule: Sleep between 10:00 PM and 6:00 AM for best results. "
-            "Environment: Use blackout curtains and noise reduction techniques. "
-            "Diet: Avoid excessive caffeine intake in the evening. "
-            "Wind-down Routine: Avoid stimulating activities before bed."
-        )
+        return {
+            'schedule': {
+                'title': 'Sleep Timing',
+                'icon': 'clock',
+                'tips': ['Sleep between 10:00 PM and 6:00 AM', 'Follow a consistent schedule']
+            },
+            'environment': {
+                'title': 'Sleep Environment',
+                'icon': 'moon',
+                'tips': ['Use blackout curtains', 'Implement noise reduction']
+            },
+            'diet': {
+                'title': 'Evening Habits',
+                'icon': 'coffee',
+                'tips': ['Avoid evening caffeine', 'Stay hydrated during the day']
+            },
+            'routine': {
+                'title': 'Night Routine',
+                'icon': 'book',
+                'tips': ['Avoid stimulating activities', 'Practice calming exercises']
+            }
+        }
+
+    # Night (10 PM - 11 PM)
     elif 22 <= wake_hour <= 23:
-        return (
-            "Sleep Schedule: Consider sleeping before midnight to wake up refreshed. "
-            "Environment: Minimize light exposure and make your bedroom relaxing. "
-            "Wind-down Routine: Begin relaxing at least an hour before sleep."
-        )
+        return {
+            'schedule': {
+                'title': 'Night Schedule',
+                'icon': 'clock',
+                'tips': ['Sleep before midnight', 'Plan for complete sleep cycles']
+            },
+            'environment': {
+                'title': 'Bedroom Setup',
+                'icon': 'moon',
+                'tips': ['Minimize light exposure', 'Create a relaxing atmosphere']
+            },
+            'routine': {
+                'title': 'Pre-sleep Routine',
+                'icon': 'book',
+                'tips': ['Begin relaxing an hour before sleep', 'Practice gentle stretching']
+            }
+        }
+
+    # Default/Other Hours
     else:
-        return "Sleep Schedule: Sleep as per your routine, and ensure you maintain consistent wake-up times."
+        return {
+            'schedule': {
+                'title': 'General Guidelines',
+                'icon': 'clock',
+                'tips': ['Maintain consistent wake-up times', 'Adjust sleep schedule gradually']
+            }
+        }
 
 
     
@@ -283,10 +372,49 @@ def sleep_tips(request):
     user = request.user
     
     # Fetch preferredWakeTime from the logged-in user's profile
-    preferredWakeTime = user.preferredWakeTime  # assuming preferredWakeTime is stored as a TimeField
+    preferredWakeTime = user.preferredWakeTime
     
-    # Get sleep tips based on wake time
-    sleep_tips = get_sleep_tips(preferredWakeTime)
+    # Get structured sleep tips based on wake time
+    tips = get_sleep_tips(preferredWakeTime)
     
-    # Render to the dashboard template
-    return render(request, 'tracker/sleep_tips.html', {'sleep_tips': sleep_tips})
+    # Create context with user info and structured tips
+    context = {
+        'user': user,
+        'preferredWakeTime': preferredWakeTime,
+        'tips': tips,  # This now contains the structured dictionary of tips
+        'categories': {
+            'schedule': {
+                'name': 'Sleep Schedule',
+                'icon': '''<svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+                </svg>'''
+            },
+            'environment': {
+                'name': 'Sleep Environment',
+                'icon': '''<svg viewBox="0 0 24 24">
+                    <path d="M20 4v16H4V4h16m2-2H2v20h20V2zm-8 9h-2V9h2v2z"/>
+                </svg>'''
+            },
+            'routine': {
+                'name': 'Evening Routine',
+                'icon': '''<svg viewBox="0 0 24 24">
+                    <path d="M17.66 8L12 2.35 6.34 8A8.02 8.02 0 004 13.64c0 2 .78 4.11 2.34 5.67a7.99 7.99 0 0011.32 0c1.56-1.56 2.34-3.67 2.34-5.67A8.02 8.02 0 0017.66 8zM6 14c.01-2 .62-3.27 1.76-4.4L12 5.27l4.24 4.38C17.38 10.77 17.99 12 18 14H6z"/>
+                </svg>'''
+            },
+            'diet': {
+                'name': 'Diet Guidelines',
+                'icon': '''<svg viewBox="0 0 24 24">
+                    <path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/>
+                </svg>'''
+            },
+            'exercise': {
+                'name': 'Exercise Tips',
+                'icon': '''<svg viewBox="0 0 24 24">
+                    <path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z"/>
+                </svg>'''
+            }
+        }
+    }
+    
+    # Render the template with the structured context
+    return render(request, 'tracker/sleep_tips.html', context)
