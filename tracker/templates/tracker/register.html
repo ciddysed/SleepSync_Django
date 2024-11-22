@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Routine</title>
+    <title>Register</title>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -27,7 +27,7 @@
             backdrop-filter: blur(10px);
         }
 
-        h1, h2 {
+        h1 {
             color: #6b4e71;
             text-align: center;
             margin: 20px 0;
@@ -53,36 +53,31 @@
             background-color: #9b6b9e;
         }
 
-        a {
-            padding: 12px;
-            text-align: center;
-            background-color: #ff4444;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            display: inline-block;
-            transition: background-color 0.3s ease;
-        }
-
-        a:hover {
-            background-color: #ff6666;
-        }
-
         p {
+            margin-top: 20px;
             text-align: center;
-            margin-bottom: 20px;
+        }
+
+        p a {
+            color: #6b4e71;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        p a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Delete Routine</h2>
-        <p>Are you sure you want to delete {{ routine.routineType }} for {{ routine.userID.name }}?</p>
-        <form method="post">
+        <h1>Register</h1>
+        <form method="POST">
             {% csrf_token %}
-            <button type="submit">Confirm</button>
+            {{ form.as_p }}
+            <button type="submit">Register</button>
         </form>
-        <a href="{% url 'routine_list' %}">Cancel</a>
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
     </div>
 </body>
 </html>

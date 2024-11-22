@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
-from .models import ProgressTracking, SleepTrack
-from .forms import ProgressTrackingForm, SleepTrackForm
+from django.contrib.auth import login, authenticate, logout
+from .models import ProgressTracking, SleepTrack, User
+from .forms import ProgressTrackingForm, SleepTrackForm, UserRegistrationForm, LoginForm
+from django.contrib.auth.hashers import make_password
+from django.contrib import messages
 
 def landing_page(request):
     return render(request, 'tracker/landing_page.html')
@@ -192,3 +195,38 @@ def alarm_delete(request, pk):
         alarm.delete()
         return redirect('alarm_list')
     return render(request, 'tracker/alarm_confirm_delete.html', {'alarm': alarm})
+
+def register_view(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.password = make_password(form.cleaned_data['password'])  # Hash the password manually
+            user.save()
+            return redirect('login')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'tracker/register.html', {'form': form})
+
+# Login View
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            # Authenticate user by email and password
+            user = authenticate(request, username=email, password=password)
+            if user is not None:
+                login(request, user)  # Log the user in
+                return redirect('landing_page')  # Redirect to a home page or dashboard
+            else:
+                messages.error(request, "Invalid email or password.")
+    else:
+        form = LoginForm()
+    return render(request, 'tracker/login.html', {'form': form})
+
+# Logout View
+def logout_view(request):
+    logout(request)
+    return redirect('login')

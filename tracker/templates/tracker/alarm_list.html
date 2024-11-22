@@ -1,11 +1,152 @@
-<h2>Smart Alarm List</h2>
-<a href="{% url 'alarm_create' %}">Add New Alarm</a>
-<ul>
-    {% for alarm in alarms %}
-        <li>
-            {{ alarm.alarmTime }}
-            <a href="{% url 'alarm_update' alarm.pk %}">Edit</a>
-            <a href="{% url 'alarm_delete' alarm.pk %}">Delete</a>
-        </li>
-    {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Alarm List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #9b6b9e 0%, #6b4e71 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #2c1810;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .logo svg {
+            width: 30px;
+            height: 30px;
+            fill: #6b4e71;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6b4e71;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: #6b4e71;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: #6b4e71;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #9b6b9e;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 15px;
+            border-bottom: 1px solid rgba(107, 78, 113, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        li:hover {
+            background: rgba(107, 78, 113, 0.05);
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn {
+            background-color: #6b4e71;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #ff4444;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #9b6b9e;
+        }
+
+        .delete-btn:hover {
+            background-color: #ff6666;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Clickable Button Logo -->
+        <button class="logo" onclick="window.location.href='{% url 'landing_page' %}'">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
+            </svg>
+            <span class="logo-text">SleepSync</span>
+        </button>
+
+        <h2>Smart Alarm List</h2>
+        <a href="{% url 'alarm_create' %}">Add New Alarm</a>
+        <ul>
+            {% for alarm in alarms %}
+                <li>
+                    {{ alarm.alarmTime }}
+                    <div class="actions">
+                        <a href="{% url 'alarm_update' alarm.pk %}" class="edit-btn">Edit</a>
+                        <a href="{% url 'alarm_delete' alarm.pk %}" class="delete-btn">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

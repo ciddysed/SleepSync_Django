@@ -1,5 +1,7 @@
 from django import forms
 from .models import ProgressTracking, SleepTrack, User, RelaxationRoutine, SmartAlarm
+from django.contrib.auth.forms import AuthenticationForm
+from django.core.exceptions import ValidationError
 
 class ProgressTrackingForm(forms.ModelForm):
     class Meta:
@@ -18,11 +20,6 @@ class SleepTrackForm(forms.ModelForm):
             'sleep_duration': forms.TimeInput(attrs={'type': 'time'}),
         }
 
-class UserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['name', 'email', 'password', 'preferredWakeTime', 'sleepGoals']
-
 class RelaxationRoutineForm(forms.ModelForm):
     class Meta:
         model = RelaxationRoutine
@@ -32,3 +29,28 @@ class SmartAlarmForm(forms.ModelForm):
     class Meta:
         model = SmartAlarm
         fields = ['alarmTime']
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['email', 'first_name', 'last_name', 'name', 'preferredWakeTime', 'sleepGoals']
+
+class UserRegistrationForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)  # Password input field
+
+    class Meta:
+        model = User
+        fields = ['name', 'email', 'password', 'preferredWakeTime', 'sleepGoals']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("This email is already registered.")
+        return email
+
+class UserLoginForm(AuthenticationForm):
+    username = forms.EmailField(label='Email')  # Override username with email
+
+class LoginForm(forms.Form):
+    email = forms.EmailField(label="Email", max_length=100)
+    password = forms.CharField(label="Password", widget=forms.PasswordInput)
