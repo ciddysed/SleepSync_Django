@@ -37,6 +37,9 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email', 'first_name', 'last_name', 'name', 'preferredWakeTime', 'sleepGoals']
+        widgets = {
+            'preferredWakeTime': forms.TimeInput(attrs={'type': 'time'}),
+        }
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)  # Password input field
