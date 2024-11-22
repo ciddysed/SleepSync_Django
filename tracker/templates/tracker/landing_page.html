@@ -204,7 +204,7 @@
         <div class="hero-content">
             <h1>Welcome to SleepSync, {{ user.name }}!</h1>
             <p>Your personalized dashboard to track and optimize your sleep.</p>
-            
+
             <div class="user-info">
                 <p><strong>Preferred Wake Time:</strong> {{ user.preferredWakeTime }}</p>
                 <p><strong>Sleep Goals:</strong> {{ user.sleepGoals }}</p>
@@ -216,6 +216,7 @@
                 <a href="{% url 'routine_list' %}" class="button">Relaxation Routines</a>
                 <a href="{% url 'alarm_list' %}" class="button">Smart Alarms</a>
                 <a href="{% url 'progress_list' %}" class="button">Progress Tracking</a>
+                <a href="{% url 'sleep_tips' %}" class="button">Sleep Tips</a>
             </div>
         </div>
     </div>
