@@ -1,13 +1,188 @@
-<!-- SleepSync/tracker/templates/tracker/user_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List - SleepSync</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #9b6b9e 0%, #6b4e71 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #2c1810;
+        }
 
-<h2>User List</h2>
-<a href="{% url 'user_create' %}">Add New User</a>
-<ul>
-    {% for user in users %}
-        <li>
-            {{ user.name }} - {{ user.email }}
-            <a href="{% url 'user_update' user.pk %}">Edit</a>
-            <a href="{% url 'user_delete' user.pk %}">Delete</a>
-        </li>
-    {% endfor %}
-</ul>
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .logo svg {
+            width: 30px;
+            height: 30px;
+            fill: #6b4e71;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6b4e71;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: #6b4e71;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+        }
+
+        .create-btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: #6b4e71;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .create-btn:hover {
+            background-color: #9b6b9e;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        li {
+            padding: 15px;
+            border-bottom: 1px solid rgba(107, 78, 113, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li:hover {
+            background: rgba(107, 78, 113, 0.05);
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .user-name {
+            font-size: 16px;
+            color: #2c1810;
+            font-weight: 500;
+        }
+
+        .user-email {
+            font-size: 14px;
+            color: #6b4e71;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn {
+            background-color: #6b4e71;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #ff4444;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #9b6b9e;
+        }
+
+        .delete-btn:hover {
+            background-color: #ff6666;
+        }
+
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: 
+                radial-gradient(1px 1px at 20px 30px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 160px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 80px, white, rgba(0,0,0,0));
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <div class="logo">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
+            </svg>
+            <span class="logo-text">SleepSync</span>
+        </div>
+        
+        <h2>User List</h2>
+        <a href="{% url 'user_create' %}" class="create-btn">Add New User</a>
+        <ul>
+            {% for user in users %}
+            <li>
+                <div class="user-info">
+                    <span class="user-name">{{ user.name }}</span>
+                    <span class="user-email">{{ user.email }}</span>
+                </div>
+                <div class="actions">
+                    <a href="{% url 'user_update' user.pk %}" class="edit-btn">Edit</a>
+                    <a href="{% url 'user_delete' user.pk %}" class="delete-btn">Delete</a>
+                </div>
+            </li>
+            {% empty %}
+            <li style="text-align: center; color: #6b4e71;">No users found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

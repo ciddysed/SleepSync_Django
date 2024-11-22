@@ -24,6 +24,9 @@ class RelaxationRoutineForm(forms.ModelForm):
     class Meta:
         model = RelaxationRoutine
         fields = ['routineType', 'routineStartTime', 'userID']
+        widgets = {
+            'routineStartTime': forms.TimeInput(attrs={'type': 'time'}),
+        }
 
 class SmartAlarmForm(forms.ModelForm):
     class Meta:
@@ -41,6 +44,9 @@ class UserRegistrationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['name', 'email', 'password', 'preferredWakeTime', 'sleepGoals']
+        widgets = {
+            'preferredWakeTime': forms.TimeInput(attrs={'type': 'time'}),
+        }
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -49,7 +55,7 @@ class UserRegistrationForm(forms.ModelForm):
         return email
 
 class UserLoginForm(AuthenticationForm):
-    username = forms.EmailField(label='Email')  # Override username with email
+    username = forms.EmailField(label='Email')
 
 class LoginForm(forms.Form):
     email = forms.EmailField(label="Email", max_length=100)

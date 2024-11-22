@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Routine</title>
+    <title>Delete Routine - SleepSync</title>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -19,70 +19,112 @@
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 400px;
             background: rgba(255, 255, 255, 0.95);
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
+            text-align: center;
         }
 
-        h1, h2 {
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .logo svg {
+            width: 30px;
+            height: 30px;
+            fill: #6b4e71;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
             color: #6b4e71;
-            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: #6b4e71;
+            margin: 20px 0;
+            font-size: 24px;
+        }
+
+        p {
+            color: #2c1810;
+            font-size: 16px;
             margin: 20px 0;
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
         button {
-            padding: 12px;
-            background-color: #6b4e71;
-            color: white;
+            width: 100%;
+            padding: 12px 25px;
+            margin: 20px 0;
             border: none;
             border-radius: 8px;
+            background-color: #ff4444;
+            color: white;
             cursor: pointer;
+            font-size: 16px;
             transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #9b6b9e;
-        }
-
-        a {
-            padding: 12px;
-            text-align: center;
-            background-color: #ff4444;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            display: inline-block;
-            transition: background-color 0.3s ease;
-        }
-
-        a:hover {
             background-color: #ff6666;
         }
 
-        p {
-            text-align: center;
-            margin-bottom: 20px;
+        .cancel-link {
+            display: inline-block;
+            text-decoration: none;
+            color: #6b4e71;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .cancel-link:hover {
+            color: #9b6b9e;
+        }
+
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: 
+                radial-gradient(1px 1px at 20px 30px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 160px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 80px, white, rgba(0,0,0,0));
+        }
+
+        .routine-text {
+            color: #6b4e71;
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
+    <div class="stars"></div>
     <div class="container">
+        <div class="logo">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
+            </svg>
+            <span class="logo-text">SleepSync</span>
+        </div>
         <h2>Delete Routine</h2>
-        <p>Are you sure you want to delete {{ routine.routineType }} for {{ routine.userID.name }}?</p>
+        <p>Are you sure you want to delete <span class="routine-text">{{ routine.routineType }}</span> for <span class="routine-text">{{ routine.userID.name }}</span>?</p>
         <form method="post">
             {% csrf_token %}
-            <button type="submit">Confirm</button>
+            <button type="submit">Delete Routine</button>
         </form>
-        <a href="{% url 'routine_list' %}">Cancel</a>
+        <a href="{% url 'routine_list' %}" class="cancel-link">Cancel</a>
     </div>
 </body>
 </html>

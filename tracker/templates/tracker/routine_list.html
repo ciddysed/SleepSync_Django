@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relaxation Routine List</title>
+    <title>Relaxation Routines - SleepSync</title>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -27,13 +27,34 @@
             backdrop-filter: blur(10px);
         }
 
-        h2 {
-            color: #6b4e71;
-            text-align: center;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             margin-bottom: 20px;
         }
 
-        a.add-new-btn {
+        .logo svg {
+            width: 30px;
+            height: 30px;
+            fill: #6b4e71;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6b4e71;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: #6b4e71;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+        }
+
+        .create-btn {
             display: inline-block;
             padding: 12px 20px;
             background-color: #6b4e71;
@@ -41,17 +62,20 @@
             text-decoration: none;
             border-radius: 8px;
             margin-bottom: 20px;
-            text-align: center;
             transition: background-color 0.3s ease;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        a.add-new-btn:hover {
+        .create-btn:hover {
             background-color: #9b6b9e;
         }
 
         ul {
             list-style-type: none;
             padding: 0;
+            margin: 20px 0;
         }
 
         li {
@@ -60,7 +84,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background-color 0.3s ease;
         }
 
         li:hover {
@@ -71,50 +94,85 @@
             border-bottom: none;
         }
 
+        .routine-info {
+            font-size: 16px;
+            color: #2c1810;
+        }
+
+        .user-name {
+            color: #6b4e71;
+            font-weight: 500;
+        }
+
         .actions {
             display: flex;
             gap: 10px;
         }
 
-        a {
+        .edit-btn, .delete-btn {
             padding: 8px 12px;
             border-radius: 6px;
             text-decoration: none;
             transition: all 0.3s ease;
         }
 
-        a.edit-btn {
+        .edit-btn {
             background-color: #6b4e71;
             color: white;
         }
 
-        a.delete-btn {
+        .delete-btn {
             background-color: #ff4444;
             color: white;
         }
 
-        a.edit-btn:hover {
+        .edit-btn:hover {
             background-color: #9b6b9e;
         }
 
-        a.delete-btn:hover {
+        .delete-btn:hover {
             background-color: #ff6666;
+        }
+
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: 
+                radial-gradient(1px 1px at 20px 30px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 160px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 80px, white, rgba(0,0,0,0));
         }
     </style>
 </head>
 <body>
+    <div class="stars"></div>
     <div class="container">
+        <div class="logo">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
+            </svg>
+            <span class="logo-text">SleepSync</span>
+        </div>
+        
         <h2>Relaxation Routine List</h2>
-        <a href="{% url 'routine_create' %}" class="add-new-btn">Add New Routine</a>
+        <a href="{% url 'routine_create' %}" class="create-btn">Add New Routine</a>
         <ul>
             {% for routine in routines %}
-                <li>
-                    <span class="track-info">{{ routine.routineType }} - {{ routine.userID.name }}</span>
-                    <div class="actions">
-                        <a href="{% url 'routine_update' routine.pk %}" class="edit-btn">Edit</a>
-                        <a href="{% url 'routine_delete' routine.pk %}" class="delete-btn">Delete</a>
-                    </div>
-                </li>
+            <li>
+                <div class="routine-info">
+                    {{ routine.routineType }} - <span class="user-name">{{ routine.userID.name }}</span>
+                </div>
+                <div class="actions">
+                    <a href="{% url 'routine_update' routine.pk %}" class="edit-btn">Edit</a>
+                    <a href="{% url 'routine_delete' routine.pk %}" class="delete-btn">Delete</a>
+                </div>
+            </li>
+            {% empty %}
+            <li style="text-align: center; color: #6b4e71;">No routines found.</li>
             {% endfor %}
         </ul>
     </div>
