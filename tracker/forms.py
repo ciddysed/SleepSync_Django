@@ -46,7 +46,7 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['name', 'email', 'password', 'preferredWakeTime', 'sleepGoals']
+        fields = ['first_name', 'last_name', 'email', 'password', 'preferredWakeTime', 'sleepGoals']
         widgets = {
             'preferredWakeTime': forms.TimeInput(attrs={'type': 'time'}),
         }

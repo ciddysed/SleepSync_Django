@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SleepSync - Dashboard</title>
+    <title>Profile - SleepSync</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -16,9 +16,9 @@
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -31,8 +31,11 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             color: white;
+            padding-top: 80px;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
         .nav-bar {
@@ -62,8 +65,6 @@
             gap: 8px;
             color: white;
             text-decoration: none;
-            font-size: 1.5rem;
-            font-weight: bold;
             transition: transform 0.3s ease;
         }
 
@@ -77,9 +78,14 @@
             fill: white;
         }
 
+        .nav-logo span {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .nav-links a {
@@ -89,18 +95,14 @@
             padding: 0.5rem 1rem;
             border-radius: 8px;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .nav-links a:hover {
             background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
         }
 
-        .nav-links a i {
-            font-size: 0.9rem;
+        .nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .stars {
@@ -113,8 +115,7 @@
                 radial-gradient(2px 2px at 40px 70px, white, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 50px 160px, white, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 90px 40px, white, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 130px 80px, white, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 160px 120px, white, rgba(0,0,0,0));
+                radial-gradient(2px 2px at 130px 80px, white, rgba(0,0,0,0));
             animation: twinkle 5s infinite;
             z-index: 0;
         }
@@ -142,25 +143,17 @@
             50% { opacity: 0.5; }
         }
 
-        .hero-section {
-            margin-top: 80px;
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-content {
+        .container {
+            width: 100%;
+            max-width: 800px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
             padding: 3rem;
-            max-width: 1000px;
-            width: 100%;
+            border-radius: 20px;
+            text-align: center;
             animation: fadeIn 1s ease-out;
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes fadeIn {
@@ -174,25 +167,18 @@
             }
         }
 
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
+        h2 {
+            font-size: 2.5rem;
             color: white;
+            margin-bottom: 2rem;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.6;
-        }
-
-        .user-info {
+        .profile-info {
             background: rgba(255, 255, 255, 0.1);
             padding: 2rem;
             border-radius: 15px;
-            margin-bottom: 2rem;
+            margin: 2rem 0;
             animation: slideIn 0.6s ease-out;
         }
 
@@ -207,19 +193,23 @@
             }
         }
 
-        .user-info p {
+        .profile-info p {
+            margin: 1.5rem 0;
             display: flex;
             align-items: center;
+            justify-content: flex-start;
             gap: 1rem;
-            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: white;
+            transition: all 0.3s ease;
         }
 
-        .user-info p:last-child {
-            margin-bottom: 0;
+        .profile-info p:hover {
+            transform: translateX(10px);
         }
 
-        .user-info i {
-            font-size: 1.2rem;
+        .profile-info i {
+            font-size: 1.5rem;
             width: 40px;
             height: 40px;
             display: flex;
@@ -230,66 +220,58 @@
             transition: all 0.3s ease;
         }
 
-        .button-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        .profile-info p:hover i {
+            transform: rotate(360deg);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-info strong {
+            font-weight: 600;
+            color: white;
+        }
+
+        .buttons {
+            display: flex;
             gap: 1.5rem;
+            justify-content: center;
             margin-top: 2rem;
         }
 
-        .button {
-            background: rgba(255, 255, 255, 0.1);
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
             color: white;
             text-decoration: none;
-            padding: 1rem 1.5rem;
             border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
             transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
             font-weight: 500;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
         }
 
-        .button:hover {
+        .btn:hover {
             transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.2);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .button i {
+        .btn i {
             font-size: 1.2rem;
             transition: transform 0.3s ease;
         }
 
-        .button:hover i {
+        .btn:hover i {
             transform: scale(1.2);
         }
 
-        footer {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .edit-button {
+            background: var(--primary);
         }
 
-        footer a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        footer a:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .edit-button:hover {
+            background: var(--primary-light);
         }
 
         @media (max-width: 768px) {
@@ -301,16 +283,16 @@
                 justify-content: center;
             }
 
-            .hero-content {
+            .container {
                 padding: 2rem 1rem;
             }
 
-            h1 {
+            h2 {
                 font-size: 2rem;
             }
 
-            .button-container {
-                grid-template-columns: 1fr;
+            .buttons {
+                flex-direction: column;
             }
 
             .moon {
@@ -319,85 +301,62 @@
                 top: 20px;
                 right: 20px;
             }
+
+            .profile-info p {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
     <nav class="nav-bar">
         <div class="nav-content">
-            <a href="#" class="nav-logo">
+            <a href="{% url 'landing_page' %}" class="nav-logo">
                 <svg viewBox="0 0 24 24">
                     <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
                 </svg>
-                SleepSync
+                <span>SleepSync</span>
             </a>
             <div class="nav-links">
-                <a href="#"><i class="fas fa-home"></i> Home</a>
-                <a href="{% url 'features' %}"><i class="fas fa-star"></i> Features</a>
-                <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
-                <a href="{% url 'contacts' %}"><i class="fas fa-envelope"></i> Contact</a>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                    <a href="{% url 'profile' %}"><i class="fas fa-user-circle"></i> Profile</a>
-                {% else %}
-                    <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
-                {% endif %}
+                <a href="{% url 'landing_page' %}">Home</a>
+                <a href="{% url 'features' %}">Features</a>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'contacts' %}">Contact</a>
+                <a href="{% url 'profile' %}" class="active">Profile</a>
             </div>
         </div>
     </nav>
 
     <div class="stars"></div>
     <div class="moon"></div>
+    
+    <div class="container">
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+        
+        <div class="profile-info">
+            <p>
+                <i class="fas fa-clock"></i>
+                <strong>Preferred Wake Time:</strong>
+                {{ user.preferredWakeTime }}
+            </p>
+            <p>
+                <i class="fas fa-bullseye"></i>
+                <strong>Sleep Goals:</strong>
+                {{ user.sleepGoals }}
+            </p>
+        </div>
 
-    <div class="hero-section">
-        <div class="hero-content">
-            {% if user.is_authenticated %}
-                <h1>Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
-                <p>Your personalized sleep dashboard awaits.</p>
-
-                <div class="user-info">
-                    <p><i class="fas fa-clock"></i> <strong>Preferred Wake Time:</strong> {{ user.preferredWakeTime }}</p>
-                    <p><i class="fas fa-bullseye"></i> <strong>Sleep Goals:</strong> {{ user.sleepGoals }}</p>
-                </div>
-
-                <div class="button-container">
-                    <a href="{% url 'user_list' %}" class="button">
-                        <i class="fas fa-users"></i> User Management
-                    </a>
-                    <a href="{% url 'sleeptrack_list' %}" class="button">
-                        <i class="fas fa-chart-line"></i> Sleep Tracking
-                    </a>
-                    <a href="{% url 'routine_list' %}" class="button">
-                        <i class="fas fa-spa"></i> Relaxation Routines
-                    </a>
-                    <a href="{% url 'alarm_list' %}" class="button">
-                        <i class="fas fa-bell"></i> Smart Alarms
-                    </a>
-                    <a href="{% url 'progress_list' %}" class="button">
-                        <i class="fas fa-trophy"></i> Progress Tracking
-                    </a>
-                    <a href="{% url 'sleep_tips' %}" class="button">
-                        <i class="fas fa-lightbulb"></i> Sleep Tips
-                    </a>
-                </div>
-            {% else %}
-                <h1>Welcome to SleepSync</h1>
-                <p>Your journey to better sleep starts here. Please log in to access your personalized dashboard.</p>
-                <div class="button-container">
-                    <a href="{% url 'login' %}" class="button">
-                        <i class="fas fa-sign-in-alt"></i> Login to Continue
-                    </a>
-                </div>
-            {% endif %}
+        <div class="buttons">
+            <a href="{% url 'edit_profile' %}" class="btn edit-button">
+                <i class="fas fa-edit"></i>
+                Edit Profile
+            </a>
+            <a href="{% url 'landing_page' %}" class="btn">
+                <i class="fas fa-home"></i>
+                Back to Home
+            </a>
         </div>
     </div>
-
-    <footer>
-        <p>
-            © 2024 SleepSync. All rights reserved. 
-            <a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a> | 
-            <a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a>
-        </p>
-    </footer>
 </body>
 </html>

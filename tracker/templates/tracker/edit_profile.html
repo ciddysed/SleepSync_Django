@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SleepSync - Dashboard</title>
+    <title>Edit Profile - SleepSync</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -16,9 +16,9 @@
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -31,8 +31,7 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             color: white;
-            display: flex;
-            flex-direction: column;
+            padding-top: 80px;
         }
 
         .nav-bar {
@@ -62,8 +61,6 @@
             gap: 8px;
             color: white;
             text-decoration: none;
-            font-size: 1.5rem;
-            font-weight: bold;
             transition: transform 0.3s ease;
         }
 
@@ -77,9 +74,14 @@
             fill: white;
         }
 
+        .nav-logo span {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .nav-links a {
@@ -96,11 +98,6 @@
 
         .nav-links a:hover {
             background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .nav-links a i {
-            font-size: 0.9rem;
         }
 
         .stars {
@@ -113,8 +110,7 @@
                 radial-gradient(2px 2px at 40px 70px, white, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 50px 160px, white, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 90px 40px, white, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 130px 80px, white, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 160px 120px, white, rgba(0,0,0,0));
+                radial-gradient(2px 2px at 130px 80px, white, rgba(0,0,0,0));
             animation: twinkle 5s infinite;
             z-index: 0;
         }
@@ -142,24 +138,23 @@
             50% { opacity: 0.5; }
         }
 
-        .hero-section {
-            margin-top: 80px;
-            flex: 1;
+        .main-content {
+            min-height: calc(100vh - 80px);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             padding: 2rem;
             position: relative;
             z-index: 1;
         }
 
-        .hero-content {
+        .container {
+            width: 100%;
+            max-width: 800px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
             padding: 3rem;
-            max-width: 1000px;
-            width: 100%;
+            border-radius: 20px;
             animation: fadeIn 1s ease-out;
         }
 
@@ -174,27 +169,26 @@
             }
         }
 
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
+        h2 {
+            font-size: 2.5rem;
             color: white;
+            text-align: center;
+            margin-bottom: 2.5rem;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.6;
+        .form-group {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            animation: slideIn 0.6s ease-out backwards;
         }
 
-        .user-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            animation: slideIn 0.6s ease-out;
-        }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.4s; }
+        .form-group:nth-child(4) { animation-delay: 0.6s; }
 
         @keyframes slideIn {
             from {
@@ -207,21 +201,26 @@
             }
         }
 
-        .user-info p {
+        .form-group:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group label {
             display: flex;
             align-items: center;
             gap: 1rem;
+            color: white;
+            font-weight: 500;
             margin-bottom: 1rem;
+            font-size: 1.1rem;
         }
 
-        .user-info p:last-child {
-            margin-bottom: 0;
-        }
-
-        .user-info i {
+        .form-group i {
             font-size: 1.2rem;
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -230,66 +229,80 @@
             transition: all 0.3s ease;
         }
 
-        .button-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+        .form-group:hover i {
+            transform: rotate(360deg);
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        .button {
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
             background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
             color: white;
             text-decoration: none;
-            padding: 1rem 1.5rem;
+            border: none;
             border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
+            font-size: 1rem;
             font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
         }
 
-        .button:hover {
+        .btn:hover {
             transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.2);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .button i {
+        .btn i {
             font-size: 1.2rem;
             transition: transform 0.3s ease;
         }
 
-        .button:hover i {
+        .btn:hover i {
             transform: scale(1.2);
         }
 
-        footer {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .save-btn {
+            background: var(--primary);
         }
 
-        footer a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        footer a:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .save-btn:hover {
+            background: var(--primary-light);
         }
 
         @media (max-width: 768px) {
@@ -301,16 +314,17 @@
                 justify-content: center;
             }
 
-            .hero-content {
+            .container {
                 padding: 2rem 1rem;
             }
 
-            h1 {
-                font-size: 2rem;
+            .buttons {
+                flex-direction: column;
             }
 
-            .button-container {
-                grid-template-columns: 1fr;
+            .btn {
+                width: 100%;
+                justify-content: center;
             }
 
             .moon {
@@ -325,23 +339,18 @@
 <body>
     <nav class="nav-bar">
         <div class="nav-content">
-            <a href="#" class="nav-logo">
+            <a href="{% url 'landing_page' %}" class="nav-logo">
                 <svg viewBox="0 0 24 24">
                     <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
                 </svg>
-                SleepSync
+                <span>SleepSync</span>
             </a>
             <div class="nav-links">
-                <a href="#"><i class="fas fa-home"></i> Home</a>
-                <a href="{% url 'features' %}"><i class="fas fa-star"></i> Features</a>
-                <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
-                <a href="{% url 'contacts' %}"><i class="fas fa-envelope"></i> Contact</a>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                    <a href="{% url 'profile' %}"><i class="fas fa-user-circle"></i> Profile</a>
-                {% else %}
-                    <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
-                {% endif %}
+                <a href="{% url 'landing_page' %}">Home</a>
+                <a href="{% url 'features' %}">Features</a>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'contacts' %}">Contact</a>
+                <a href="{% url 'profile' %}">Profile</a>
             </div>
         </div>
     </nav>
@@ -349,55 +358,49 @@
     <div class="stars"></div>
     <div class="moon"></div>
 
-    <div class="hero-section">
-        <div class="hero-content">
-            {% if user.is_authenticated %}
-                <h1>Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
-                <p>Your personalized sleep dashboard awaits.</p>
-
-                <div class="user-info">
-                    <p><i class="fas fa-clock"></i> <strong>Preferred Wake Time:</strong> {{ user.preferredWakeTime }}</p>
-                    <p><i class="fas fa-bullseye"></i> <strong>Sleep Goals:</strong> {{ user.sleepGoals }}</p>
+    <div class="main-content">
+        <div class="container">
+            <h2>Edit Profile</h2>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="first_name">
+                        <i class="fas fa-user"></i>First Name
+                    </label>
+                    <input type="text" id="first_name" name="firstName" value="{{ user.first_name }}" required>
                 </div>
 
-                <div class="button-container">
-                    <a href="{% url 'user_list' %}" class="button">
-                        <i class="fas fa-users"></i> User Management
-                    </a>
-                    <a href="{% url 'sleeptrack_list' %}" class="button">
-                        <i class="fas fa-chart-line"></i> Sleep Tracking
-                    </a>
-                    <a href="{% url 'routine_list' %}" class="button">
-                        <i class="fas fa-spa"></i> Relaxation Routines
-                    </a>
-                    <a href="{% url 'alarm_list' %}" class="button">
-                        <i class="fas fa-bell"></i> Smart Alarms
-                    </a>
-                    <a href="{% url 'progress_list' %}" class="button">
-                        <i class="fas fa-trophy"></i> Progress Tracking
-                    </a>
-                    <a href="{% url 'sleep_tips' %}" class="button">
-                        <i class="fas fa-lightbulb"></i> Sleep Tips
+                <div class="form-group">
+                    <label for="last_name">
+                        <i class="fas fa-user"></i>Last Name
+                    </label>
+                    <input type="text" id="last_name" name="lastName" value="{{ user.last_name }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="wake_time">
+                        <i class="fas fa-clock"></i>Preferred Wake Time
+                    </label>
+                    <input type="time" id="wake_time" name="preferredWakeTime" value="{{ user.preferredWakeTime }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sleep_goals">
+                        <i class="fas fa-bullseye"></i>Sleep Goals
+                    </label>
+                    <textarea id="sleep_goals" name="sleepGoals" placeholder="Enter your sleep goals...">{{ user.sleepGoals }}</textarea>
+                </div>
+
+                <div class="buttons">
+                    <button type="submit" class="btn save-btn">
+                        <i class="fas fa-save"></i>Save Changes
+                    </button>
+                    <a href="{% url 'profile' %}" class="btn">
+                        <i class="fas fa-times"></i>Cancel
                     </a>
                 </div>
-            {% else %}
-                <h1>Welcome to SleepSync</h1>
-                <p>Your journey to better sleep starts here. Please log in to access your personalized dashboard.</p>
-                <div class="button-container">
-                    <a href="{% url 'login' %}" class="button">
-                        <i class="fas fa-sign-in-alt"></i> Login to Continue
-                    </a>
-                </div>
-            {% endif %}
+            </form>
         </div>
     </div>
-
-    <footer>
-        <p>
-            © 2024 SleepSync. All rights reserved. 
-            <a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a> | 
-            <a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a>
-        </p>
-    </footer>
 </body>
 </html>

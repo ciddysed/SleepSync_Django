@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SleepSync - Dashboard</title>
+    <title>Contact Us - SleepSync</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -16,13 +16,14 @@
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Inter', sans-serif;
+            margin: 0;
             min-height: 100vh;
             background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%),
                         url('/api/placeholder/1920/1080');
@@ -30,9 +31,9 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            color: white;
-            display: flex;
-            flex-direction: column;
+            color: #ffffff;
+            padding-top: 80px;
+            line-height: 1.6;
         }
 
         .nav-bar {
@@ -62,8 +63,6 @@
             gap: 8px;
             color: white;
             text-decoration: none;
-            font-size: 1.5rem;
-            font-weight: bold;
             transition: transform 0.3s ease;
         }
 
@@ -77,9 +76,14 @@
             fill: white;
         }
 
+        .nav-logo span {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .nav-links a {
@@ -89,18 +93,14 @@
             padding: 0.5rem 1rem;
             border-radius: 8px;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .nav-links a:hover {
             background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
         }
 
-        .nav-links a i {
-            font-size: 0.9rem;
+        .nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .stars {
@@ -142,24 +142,19 @@
             50% { opacity: 0.5; }
         }
 
-        .hero-section {
-            margin-top: 80px;
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
+        .page-content {
             position: relative;
             z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
-        .hero-content {
+        .contact-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
             padding: 3rem;
-            max-width: 1000px;
-            width: 100%;
+            border-radius: 20px;
             animation: fadeIn 1s ease-out;
         }
 
@@ -174,27 +169,39 @@
             }
         }
 
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
+        h2 {
+            font-size: 2.5rem;
             color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 1s ease-out;
         }
 
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.6;
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .user-info {
+        .contact-item {
             background: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 15px;
-            margin-bottom: 2rem;
-            animation: slideIn 0.6s ease-out;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            animation: slideIn 0.6s ease-out backwards;
         }
+
+        .contact-item:nth-child(2) { animation-delay: 0.2s; }
+        .contact-item:nth-child(3) { animation-delay: 0.4s; }
 
         @keyframes slideIn {
             from {
@@ -207,21 +214,16 @@
             }
         }
 
-        .user-info p {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
+        .contact-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
-        .user-info p:last-child {
-            margin-bottom: 0;
-        }
-
-        .user-info i {
-            font-size: 1.2rem;
-            width: 40px;
-            height: 40px;
+        .contact-item i {
+            font-size: 1.8rem;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -230,18 +232,40 @@
             transition: all 0.3s ease;
         }
 
-        .button-container {
+        .contact-item:hover i {
+            transform: rotate(360deg);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .contact-item div {
+            flex: 1;
+        }
+
+        .contact-item strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: white;
+            text-align: center;
+            margin: 3rem 0 2rem;
+        }
+
+        .social-links {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin-top: 2rem;
         }
 
-        .button {
+        .social-link {
             background: rgba(255, 255, 255, 0.1);
             color: white;
             text-decoration: none;
-            padding: 1rem 1.5rem;
+            padding: 1rem;
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -249,47 +273,55 @@
             gap: 0.8rem;
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
-            font-weight: 500;
         }
 
-        .button:hover {
+        .social-link:hover {
             transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.2);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .button i {
-            font-size: 1.2rem;
+        .home-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .home-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-button i {
             transition: transform 0.3s ease;
         }
 
-        .button:hover i {
-            transform: scale(1.2);
+        .home-button:hover i {
+            transform: translateX(-5px);
         }
 
         footer {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem;
             text-align: center;
-            position: relative;
-            z-index: 1;
+            margin-top: 3rem;
+            padding-top: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        footer a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        footer a:hover {
-            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
         }
 
         @media (max-width: 768px) {
@@ -301,15 +333,21 @@
                 justify-content: center;
             }
 
-            .hero-content {
-                padding: 2rem 1rem;
+            .page-content {
+                padding: 1rem;
             }
 
-            h1 {
+            h2 {
                 font-size: 2rem;
             }
 
-            .button-container {
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .social-links {
                 grid-template-columns: 1fr;
             }
 
@@ -325,23 +363,18 @@
 <body>
     <nav class="nav-bar">
         <div class="nav-content">
-            <a href="#" class="nav-logo">
+            <a href="{% url 'landing_page' %}" class="nav-logo">
                 <svg viewBox="0 0 24 24">
                     <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
                 </svg>
-                SleepSync
+                <span>SleepSync</span>
             </a>
             <div class="nav-links">
-                <a href="#"><i class="fas fa-home"></i> Home</a>
-                <a href="{% url 'features' %}"><i class="fas fa-star"></i> Features</a>
-                <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
-                <a href="{% url 'contacts' %}"><i class="fas fa-envelope"></i> Contact</a>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                    <a href="{% url 'profile' %}"><i class="fas fa-user-circle"></i> Profile</a>
-                {% else %}
-                    <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
-                {% endif %}
+                <a href="{% url 'landing_page' %}">Home</a>
+                <a href="{% url 'features' %}">Features</a>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'contacts' %}" class="active">Contact</a>
+                <a href="{% url 'profile' %}">Profile</a>
             </div>
         </div>
     </nav>
@@ -349,55 +382,59 @@
     <div class="stars"></div>
     <div class="moon"></div>
 
-    <div class="hero-section">
-        <div class="hero-content">
-            {% if user.is_authenticated %}
-                <h1>Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
-                <p>Your personalized sleep dashboard awaits.</p>
+    <div class="page-content">
+        <div class="contact-card">
+            <h2>Get in Touch</h2>
+            
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <div>
+                    <strong>Phone</strong>
+                    +1 234 567 890
+                </div>
+            </div>
 
-                <div class="user-info">
-                    <p><i class="fas fa-clock"></i> <strong>Preferred Wake Time:</strong> {{ user.preferredWakeTime }}</p>
-                    <p><i class="fas fa-bullseye"></i> <strong>Sleep Goals:</strong> {{ user.sleepGoals }}</p>
+            <div class="contact-item">
+                <i class="fas fa-phone-alt"></i>
+                <div>
+                    <strong>Landline</strong>
+                    (012) 345 6789
                 </div>
+            </div>
 
-                <div class="button-container">
-                    <a href="{% url 'user_list' %}" class="button">
-                        <i class="fas fa-users"></i> User Management
-                    </a>
-                    <a href="{% url 'sleeptrack_list' %}" class="button">
-                        <i class="fas fa-chart-line"></i> Sleep Tracking
-                    </a>
-                    <a href="{% url 'routine_list' %}" class="button">
-                        <i class="fas fa-spa"></i> Relaxation Routines
-                    </a>
-                    <a href="{% url 'alarm_list' %}" class="button">
-                        <i class="fas fa-bell"></i> Smart Alarms
-                    </a>
-                    <a href="{% url 'progress_list' %}" class="button">
-                        <i class="fas fa-trophy"></i> Progress Tracking
-                    </a>
-                    <a href="{% url 'sleep_tips' %}" class="button">
-                        <i class="fas fa-lightbulb"></i> Sleep Tips
-                    </a>
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <div>
+                    <strong>Email</strong>
+                    contact@sleepsync.com
                 </div>
-            {% else %}
-                <h1>Welcome to SleepSync</h1>
-                <p>Your journey to better sleep starts here. Please log in to access your personalized dashboard.</p>
-                <div class="button-container">
-                    <a href="{% url 'login' %}" class="button">
-                        <i class="fas fa-sign-in-alt"></i> Login to Continue
-                    </a>
-                </div>
-            {% endif %}
+            </div>
+
+            <h3>Connect with us on social media</h3>
+            <div class="social-links">
+                <a href="https://facebook.com/sleepsync" target="_blank" class="social-link">
+                    <i class="fab fa-facebook-f"></i>
+                    Facebook
+                </a>
+                <a href="https://instagram.com/sleepsync" target="_blank" class="social-link">
+                    <i class="fab fa-instagram"></i>
+                    Instagram
+                </a>
+                <a href="https://twitter.com/sleepsync" target="_blank" class="social-link">
+                    <i class="fab fa-twitter"></i>
+                    X (Twitter)
+                </a>
+            </div>
         </div>
+
+        <footer>
+            <p>© 2024 SleepSync. All Rights Reserved.</p>
+        </footer>
     </div>
 
-    <footer>
-        <p>
-            © 2024 SleepSync. All rights reserved. 
-            <a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a> | 
-            <a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a>
-        </p>
-    </footer>
+    <a href="{% url 'landing_page' %}" class="home-button">
+        <i class="fas fa-chevron-left"></i>
+        Back to Home
+    </a>
 </body>
 </html>

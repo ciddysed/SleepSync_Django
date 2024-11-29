@@ -5,12 +5,57 @@ from .forms import ProgressTrackingForm, SleepTrackForm, UserRegistrationForm, L
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from datetime import datetime
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def profile_view(request):
+    return render(request, 'tracker/profile.html', {'user': request.user})
+
+def profile(request):
+    user = request.user
+    return render(request, 'tracker/profile.html', {'user': user})
+
+@login_required
+def edit_profile(request):
+    user = request.user 
+
+    if request.method == 'POST':
+        first_name = request.POST.get('firstName')
+        last_name = request.POST.get('lastName')
+        preferred_wake_time = request.POST.get('preferredWakeTime')
+        sleep_goals = request.POST.get('sleepGoals')
+        profile_picture = request.FILES.get('profile_picture')
+
+        user.first_name = first_name
+        user.last_name = last_name
+        user.preferredWakeTime = preferred_wake_time
+        user.sleepGoals = sleep_goals
+
+        if profile_picture:
+            user.profile_picture = profile_picture
+
+        user.save() 
+
+        return redirect('profile')
+
+    else:
+        return render(request, 'tracker/edit_profile.html', {'user': user})
 
 def landing_page(request):
     return render(request, 'tracker/landing_page.html')
 
-# Progress Tracking CRUD
+def about(request):
+    return render(request, 'tracker/about.html')
+
+def contacts(request):
+    return render(request, 'tracker/contacts.html')
+
+def features(request):
+    return render(request, 'tracker/features.html')
+
 def progress_list(request):
+    user = request.user
     progress = ProgressTracking.objects.all()
     return render(request, 'tracker/progress_list.html', {'progress': progress})
 
@@ -42,7 +87,6 @@ def progress_delete(request, pk):
         return redirect('progress_list')
     return render(request, 'tracker/progress_confirm_delete.html', {'progress': progress})
 
-# Sleep Track CRUD
 def sleeptrack_list(request):
     sleep_tracks = SleepTrack.objects.all()
     return render(request, 'tracker/sleeptrack_list.html', {'sleep_tracks': sleep_tracks})
@@ -76,18 +120,15 @@ def sleeptrack_delete(request, pk):
     return render(request, 'tracker/sleeptrack_confirm_delete.html', {'sleep_track': sleep_track})
 
 
-# SleepSync/tracker/views.py
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import User
 from .forms import UserForm
 
-# List all users
 def user_list(request):
     users = User.objects.all()
     return render(request, 'tracker/user_list.html', {'users': users})
 
-# Create a new user
 def user_create(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
@@ -98,7 +139,6 @@ def user_create(request):
         form = UserForm()
     return render(request, 'tracker/user_form.html', {'form': form})
 
-# Update an existing user
 def user_update(request, pk):
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
@@ -110,7 +150,6 @@ def user_update(request, pk):
         form = UserForm(instance=user)
     return render(request, 'tracker/user_form.html', {'form': form})
 
-# Delete a user
 def user_delete(request, pk):
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
@@ -122,12 +161,10 @@ def user_delete(request, pk):
 from .models import RelaxationRoutine
 from .forms import RelaxationRoutineForm
 
-# List all routines
 def routine_list(request):
     routines = RelaxationRoutine.objects.all()
     return render(request, 'tracker/routine_list.html', {'routines': routines})
 
-# Create a new routine
 def routine_create(request):
     if request.method == 'POST':
         form = RelaxationRoutineForm(request.POST)
@@ -138,7 +175,6 @@ def routine_create(request):
         form = RelaxationRoutineForm()
     return render(request, 'tracker/routine_form.html', {'form': form})
 
-# Update an existing routine
 def routine_update(request, pk):
     routine = get_object_or_404(RelaxationRoutine, pk=pk)
     if request.method == 'POST':
@@ -150,7 +186,6 @@ def routine_update(request, pk):
         form = RelaxationRoutineForm(instance=routine)
     return render(request, 'tracker/routine_form.html', {'form': form})
 
-# Delete a routine
 def routine_delete(request, pk):
     routine = get_object_or_404(RelaxationRoutine, pk=pk)
     if request.method == 'POST':
@@ -161,12 +196,10 @@ def routine_delete(request, pk):
 from .models import SmartAlarm
 from .forms import SmartAlarmForm
 
-# List all alarms
 def alarm_list(request):
     alarms = SmartAlarm.objects.all()
     return render(request, 'tracker/alarm_list.html', {'alarms': alarms})
 
-# Create a new alarm
 def alarm_create(request):
     if request.method == 'POST':
         form = SmartAlarmForm(request.POST)
@@ -177,7 +210,6 @@ def alarm_create(request):
         form = SmartAlarmForm()
     return render(request, 'tracker/alarm_form.html', {'form': form})
 
-# Update an existing alarm
 def alarm_update(request, pk):
     alarm = get_object_or_404(SmartAlarm, pk=pk)
     if request.method == 'POST':
@@ -189,7 +221,6 @@ def alarm_update(request, pk):
         form = SmartAlarmForm(instance=alarm)
     return render(request, 'tracker/alarm_form.html', {'form': form})
 
-# Delete an alarm
 def alarm_delete(request, pk):
     alarm = get_object_or_404(SmartAlarm, pk=pk)
     if request.method == 'POST':
@@ -202,7 +233,7 @@ def register_view(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.password = make_password(form.cleaned_data['password'])  # Hash the password manually
+            user.password = make_password(form.cleaned_data['password']) 
             user.save()
             return redirect('login')
     else:
