@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('tracker/', include('tracker.urls')),
     
-    path('', RedirectView.as_view(url='/schedules/', permanent=False)), 
+    path('', RedirectView.as_view(url='/tracker/', permanent=False)), 
 ]

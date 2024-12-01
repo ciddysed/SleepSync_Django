@@ -449,3 +449,25 @@ def sleep_tips(request):
     
     # Render the template with the structured context
     return render(request, 'tracker/sleep_tips.html', context)
+
+def edit_wake_time(request):
+    user = User.objects.get(user=request.user)
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('sleep_tips')  # Redirect to the desired page
+    else:
+        form = UserForm(instance=user)
+    return render(request, 'edit_wake_time.html', {'form': form})
+
+@login_required
+def update_wake_time(request):
+    if request.method == 'POST':
+        wake_time = request.POST.get('wake_time')
+        if wake_time:
+            user = request.user
+            user.preferredWakeTime = wake_time
+            user.save()
+            return redirect('sleep_tips')  # Redirect to the sleep tips page or wherever appropriate.
+    return redirect('sleep_tips')  # Redirect in case of invalid form submission or GET request.

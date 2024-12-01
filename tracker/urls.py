@@ -41,4 +41,7 @@ urlpatterns = [
     path('contacts/', views.contacts, name='contacts'),
     path('features/', views.features, name='features'),
 
+    path('edit-wake-time/', views.edit_wake_time, name='edit_wake_time'),
+    path('update-wake-time/', views.update_wake_time, name='update_wake_time'),
+
 ]

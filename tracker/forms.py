@@ -39,6 +39,7 @@ class UserForm(forms.ModelForm):
         fields = ['email', 'first_name', 'last_name', 'name', 'preferredWakeTime', 'sleepGoals']
         widgets = {
             'preferredWakeTime': forms.TimeInput(attrs={'type': 'time'}),
+            'wake_time': forms.TimeInput(attrs={'type': 'time'}),
         }
 
 class UserRegistrationForm(forms.ModelForm):

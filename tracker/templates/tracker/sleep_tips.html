@@ -41,12 +41,25 @@
             border-radius: 10px;
             margin-bottom: 30px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;  /* Show pointer cursor */
+            transition: all 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .logo:hover {
+            background: rgba(255, 255, 255, 0.8);  /* Change background color on hover */
+            transform: scale(1.05);  /* Slightly scale up the logo */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
         }
 
         .logo svg {
             width: 30px;
             height: 30px;
             fill: #6b4e71;
+            transition: fill 0.3s ease; /* Smooth transition for SVG color */
+        }
+
+        .logo:hover svg {
+            fill: #9b6b9e; /* Change the SVG color on hover */
         }
 
         .logo-text {
@@ -54,12 +67,17 @@
             font-weight: bold;
             color: #6b4e71;
             letter-spacing: 1px;
+            transition: color 0.3s ease; /* Smooth transition for text color */
+        }
+
+        .logo:hover .logo-text {
+            color: #9b6b9e; /* Change the text color on hover */
         }
 
         h1 {
             color: #fff;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
+            margin-bottom: 50px;
             font-size: 2.5em;
         }
 
@@ -193,6 +211,31 @@
                 padding: 12px 20px;
             }
         }
+        .tip-box {
+            cursor: pointer;
+            opacity: 1;
+            border: 2px solid transparent;
+        }
+        .tip-box.checked {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #6b4e71;
+            opacity: 0.9;
+        }
+        .proceed-button {
+            margin-top: 75px;
+            display: none;
+            background: #6b4e71;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .proceed-button:hover {
+            background: #9b6b9e;
+        }
     </style>
 </head>
 <body>
@@ -206,14 +249,20 @@
                 <span class="logo-text">SleepSync</span>
             </button>
             <h1>Welcome{% if user.name %}, {{ user.name }}{% endif %}!</h1>
-            {% if preferredWakeTime %}
-                <div class="wake-time">Your Wake Time: {{ preferredWakeTime|time:"g:i A" }}</div>
-            {% endif %}
-        </div>
+        
+            <!-- Editable Wake Time Section -->
+            <form method="POST" action="{% url 'update_wake_time' %}" id="wakeTimeForm">
+                {% csrf_token %}
+                <div class="wake-time">
+                    <label for="wake_time">Your Wake Time:</label>
+                    <input type="time" id="wake_time" name="wake_time" value="{{ user.preferredWakeTime|time:"H:i" }}" onchange="this.form.submit()" />
+                </div>
+            </form>
+        </div>        
 
         <div class="tips-container">
             {% for category, data in tips.items %}
-                <div class="tip-box">
+                <div class="tip-box" onclick="toggleCheck(this)">
                     <div class="tip-header">
                         <div class="tip-icon">
                             {% if category == 'schedule' %}
@@ -250,6 +299,22 @@
                 </div>
             {% endfor %}
         </div>
+
+        <button class="proceed-button" id="proceedButton" onclick="window.location.href='{% url 'alarm_list' %}'">Go to Alarm List</button>
     </div>
+
+    <script>
+        function toggleCheck(box) {
+            box.classList.toggle("checked");
+            updateButtonVisibility();
+        }
+
+        function updateButtonVisibility() {
+            const allTips = document.querySelectorAll(".tip-box");
+            const proceedButton = document.getElementById("proceedButton");
+            const allChecked = Array.from(allTips).every(tip => tip.classList.contains("checked"));
+            proceedButton.style.display = allChecked ? "block" : "none";
+        }
+    </script>
 </body>
 </html>
