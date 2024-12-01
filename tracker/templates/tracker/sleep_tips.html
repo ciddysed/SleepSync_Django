@@ -248,7 +248,7 @@
                 </svg>
                 <span class="logo-text">SleepSync</span>
             </button>
-            <h1>Welcome{% if user.name %}, {{ user.name }}{% endif %}!</h1>
+            <h1>Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
         
             <!-- Editable Wake Time Section -->
             <form method="POST" action="{% url 'update_wake_time' %}" id="wakeTimeForm">
