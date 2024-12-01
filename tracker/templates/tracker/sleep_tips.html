@@ -234,6 +234,7 @@
         .proceed-button {
             display: none;
             margin-top: 2rem;
+            margin-left: 16rem;
             padding: 1rem 2rem;
             background: rgba(255, 255, 255, 0.1);
             color: white;
@@ -276,7 +277,6 @@
     <div class="moon"></div>
 
     <div class="container">
-<<<<<<< HEAD
         <div class="header-section">
             <button class="logo" onclick="window.location.href='{% url 'landing_page' %}'">
                 <svg viewBox="0 0 24 24">
@@ -284,35 +284,17 @@
                 </svg>
                 <span class="logo-text">SleepSync</span>
             </button>
-            <h1>Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
+            <h1>Need Tips, {{ user.first_name }} {{ user.last_name }}?</h1>
         
             <!-- Editable Wake Time Section -->
             <form method="POST" action="{% url 'update_wake_time' %}" id="wakeTimeForm">
                 {% csrf_token %}
                 <div class="wake-time">
-                    <label for="wake_time">Your Wake Time:</label>
+                    <label for="wake_time">Wake Time:</label>
                     <input type="time" id="wake_time" name="wake_time" value="{{ user.preferredWakeTime|time:"H:i" }}" onchange="this.form.submit()" />
                 </div>
             </form>
         </div>        
-=======
-        <button class="logo" onclick="window.location.href='{% url 'landing_page' %}'">
-            <svg viewBox="0 0 24 24">
-                <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
-            </svg>
-            <span class="logo-text">SleepSync</span>
-        </button>
-
-        <h1>Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
-
-        <form method="POST" action="{% url 'update_wake_time' %}" id="wakeTimeForm">
-            {% csrf_token %}
-            <div class="wake-time">
-                <label for="wake_time">Your Wake Time:</label>
-                <input type="time" id="wake_time" name="wake_time" value="{{ user.preferredWakeTime|time:"H:i" }}" onchange="this.form.submit()" />
-            </div>
-        </form>
->>>>>>> e850723127c5b65818d87b0ce0733eb08547f408
 
         <div class="tips-container">
             {% for category, data in tips.items %}
