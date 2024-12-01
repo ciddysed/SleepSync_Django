@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -62,6 +68,11 @@
         @keyframes twinkle {
             0%, 100% { opacity: 0.8; }
             50% { opacity: 0.5; }
+        }
+
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(100%); }
         }
 
         .container {
@@ -120,18 +131,13 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
         form p {
             background: rgba(255, 255, 255, 0.1);
             padding: 20px;
             border-radius: 15px;
             margin: 0 0 15px 0;
             transition: all 0.3s ease;
+            text-align: center;
         }
 
         form p:hover {
@@ -145,10 +151,12 @@
             margin-bottom: 12px;
             color: white;
             font-weight: 500;
+            text-align: center;
         }
 
         form input {
             width: 100%;
+            max-width: 400px;
             padding: 15px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -156,16 +164,44 @@
             color: white;
             font-size: 1rem;
             transition: all 0.3s ease;
+            margin: 0 auto;
+            display: block;
         }
 
-        form input:focus {
+        form textarea {
+            width: 100%;
+            max-width: 400px;
+            min-height: 120px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+            display: block;
+            resize: vertical;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.5;
+            background-image: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.05) 0%,
+                rgba(255, 255, 255, 0.08) 100%
+            );
+        }
+
+        form input:focus,
+        form textarea:focus {
             background: rgba(255, 255, 255, 0.1);
             border-color: rgba(255, 255, 255, 0.3);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
         }
 
-        form input::placeholder {
+        form input::placeholder,
+        form textarea::placeholder {
             color: rgba(255, 255, 255, 0.5);
         }
 
@@ -174,12 +210,40 @@
             font-size: 0.85rem;
             margin-top: 8px;
             display: block;
+            text-align: center;
+        }
+
+        form label::after {
+            content: "*";
+            color: rgba(255, 255, 255, 0.6);
+            margin-left: 4px;
+            font-size: 1.2em;
+        }
+
+        .errorlist {
+            color: #ff6b6b;
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        input[type="time"] {
+            width: 200px;
+            text-align: center;
+            cursor: pointer;
         }
 
         button {
             width: 100%;
+            max-width: 400px;
+            margin: 20px auto 0;
             padding: 16px;
-            background: linear-gradient(45deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.25));
+            background: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.15), 
+                rgba(255, 255, 255, 0.25)
+            );
             border: none;
             border-radius: 12px;
             color: white;
@@ -196,12 +260,11 @@
 
         button:hover {
             transform: translateY(-2px);
-            background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.3));
+            background: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.2), 
+                rgba(255, 255, 255, 0.3)
+            );
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        button:active {
-            transform: translateY(1px);
         }
 
         .login-link {
@@ -234,6 +297,12 @@
             h1 {
                 font-size: 1.8rem;
             }
+
+            form input,
+            form textarea,
+            button {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -242,7 +311,6 @@
     <div class="clouds"></div>
     <div class="stars"></div>
     <div class="container">
-        <!-- Logo -->
         <button class="logo" onclick="window.location.href='{% url 'landing_page' %}'">
             <svg viewBox="0 0 24 24">
                 <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>

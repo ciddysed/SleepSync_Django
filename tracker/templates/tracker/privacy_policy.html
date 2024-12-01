@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - SleepSync</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6b4e71;
+            --primary-light: #9b6b9e;
+            --text: #2c1810;
+            --gradient-start: rgba(44, 24, 48, 0.9);
+            --gradient-end: rgba(107, 78, 113, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%),
+                        url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: 
+                radial-gradient(2px 2px at 20px 30px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, white, rgba(0,0,0,0));
+            animation: twinkle 5s infinite;
+            z-index: 0;
+        }
+
+        .moon {
+            position: fixed;
+            top: 50px;
+            right: 50px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: transparent;
+            box-shadow: 15px 15px 0 0 #fff;
+            animation: moonGlow 4s infinite ease-in-out;
+            z-index: 0;
+            transform: rotate(-45deg);
+        }
+
+        @keyframes moonGlow {
+            0%, 100% { box-shadow: 15px 15px 0 0 rgba(255, 255, 255, 1); }
+            50% { box-shadow: 15px 15px 0 0 rgba(255, 255, 255, 0.8); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.5; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            text-decoration: none;
+            background: none;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+        }
+
+        .logo svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: white;
+            margin: 0;
+        }
+
+        section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .icon-wrapper {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        section:hover .icon-wrapper {
+            transform: rotate(360deg);
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        li {
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .moon {
+                width: 60px;
+                height: 60px;
+                top: 20px;
+                right: 20px;
+            }
+
+            .icon-wrapper {
+                width: 32px;
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="moon"></div>
+
+    <div class="container">
+        <button class="logo" onclick="window.location.href='{% url 'landing_page' %}'">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
+            </svg>
+            <span class="logo-text">SleepSync</span>
+        </button>
+
+        <h1>Privacy Policy</h1>
+
+        <section>
+            <div class="section-header">
+                <div class="icon-wrapper">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2>Your Privacy Matters</h2>
+            </div>
+            <p>At SleepSync, we value your privacy. This Privacy Policy outlines the types of information we collect,
+                how we use it, and the measures we take to protect your data.</p>
+        </section>
+
+        <section>
+            <div class="section-header">
+                <div class="icon-wrapper">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h2>Information We Collect</h2>
+            </div>
+            <ul>
+                <li><i class="fas fa-user-circle"></i> Personal Information: Name, email, preferred wake times, and sleep goals</li>
+                <li><i class="fas fa-chart-line"></i> Usage Data: Interactions with SleepSync features</li>
+                <li><i class="fas fa-clock"></i> Sleep Patterns: Your sleep schedule and preferences</li>
+            </ul>
+        </section>
+
+        <section>
+            <div class="section-header">
+                <div class="icon-wrapper">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h2>How We Use Your Information</h2>
+            </div>
+            <p>We use your data to enhance your experience with SleepSync, such as:</p>
+            <ul>
+                <li><i class="fas fa-chart-bar"></i> Improving sleep tracking accuracy</li>
+                <li><i class="fas fa-bullseye"></i> Delivering personalized recommendations</li>
+                <li><i class="fas fa-magic"></i> Enhancing app features based on usage patterns</li>
+            </ul>
+        </section>
+
+        <section>
+            <div class="section-header">
+                <div class="icon-wrapper">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h2>Your Rights</h2>
+            </div>
+            <p>You have the right to access, update, or delete your data at any time.</p>
+            <p><i class="fas fa-headset"></i> Contact our support team for assistance</p>
+        </section>
+
+        <footer>
+            <a href="{% url 'landing_page' %}">Back to Home</a>
+        </footer>
+    </div>
+</body>
+</html>
