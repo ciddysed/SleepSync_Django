@@ -54,6 +54,12 @@ def contacts(request):
 def features(request):
     return render(request, 'tracker/features.html')
 
+def privacy_policy(request):
+    return render(request, 'tracker/privacy_policy.html')
+
+def terms_of_service(request):
+    return render(request, 'tracker/terms_of_service.html')
+
 def progress_list(request):
     user = request.user
     progress = ProgressTracking.objects.all()
@@ -241,6 +247,9 @@ def register_view(request):
     return render(request, 'tracker/register.html', {'form': form})
 
 # Login View
+def landing(request):
+    return render(request, 'tracker/landing.html')
+
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
