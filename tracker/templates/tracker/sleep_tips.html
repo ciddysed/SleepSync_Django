@@ -334,9 +334,11 @@
             {% endfor %}
         </div>
 
-        <button class="proceed-button" id="proceedButton" onclick="window.location.href='{% url 'alarm_list' %}'">
+        {% url 'alarm_list' as alarm_list_url %}
+        <button class="proceed-button" id="proceedButton" onclick="window.location.href='{{ alarm_list_url }}'">
             Go to Alarm List
         </button>
+        
     </div>
 
     <script>

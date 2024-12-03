@@ -70,4 +70,5 @@ class SmartAlarm(models.Model):
     alarmTime = models.TimeField()                # Store the time for the alarm
 
     def __str__(self):
-        return f"Alarm at {self.alarmTime}" 
+        return f"Alarm at {self.alarmTime}"
+

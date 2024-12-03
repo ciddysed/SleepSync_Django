@@ -7,6 +7,7 @@ urlpatterns = [
 
     
     path('progress/', views.progress_list, name='progress_list'),
+    path('progress/bar/', views.progress_bar_view, name='progress_bar'),
     path('progress/create/', views.progress_create, name='progress_create'),
     path('progress/update/<int:pk>/', views.progress_update, name='progress_update'),
     path('progress/delete/<int:pk>/', views.progress_delete, name='progress_delete'),

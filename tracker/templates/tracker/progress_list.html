@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sleep Progress List</title>
+    <script type="text/javascript"> 
+        function openProgress() { 
+            window.location.href = '/tracker/progress/bar/'; 
+        } 
+    </script>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -138,6 +143,33 @@
             padding: 20px;
             font-style: italic;
         }
+
+        .progress-bar-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .progress-bar-btn:hover {
+            background-color: rgba(107, 78, 113, 0.2);
+        }
+
+        .progress-container {
+            width: 80%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -158,6 +190,14 @@
                     {{ p.date }} - {{ p.goal }}
                 </div>
                 <div class="actions">
+                    <button class="progress-bar-btn" title="View Progress" onclick="openProgress()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#6b4e71">
+                            <circle cx="12" cy="12" r="10" fill="#e0e0e0"/>
+                            <path d="M12 2a10 10 0 0 1 10 10h-5a5 5 0 0 0-5-5V2z" fill="#6b4e71"/>
+                            <path d="M22 12a10 10 0 0 1-10 10v-5a5 5 0 0 0 5-5h5z" fill="#9b6b9e"/>
+                        </svg>
+                    </button>                                        
+                    
                     <a href="{% url 'progress_update' p.progress_id %}" class="edit-btn">Edit</a>
                     <a href="{% url 'progress_delete' p.progress_id %}" class="delete-btn">Delete</a>
                 </div>

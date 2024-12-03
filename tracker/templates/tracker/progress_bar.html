@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Bar</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #9b6b9e 0%, #6b4e71 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #2c1810;
+        }
+
+        .progress-container {
+            width: 80%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #6b4e71;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(107, 78, 113, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            width: 50%;  /* Default width for demo purposes */
+            height: 100%;
+            background: #6b4e71;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .close-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #6b4e71;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background-color: #9b6b9e;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container" id="progressModal">
+        <h1>Sleep Progress</h1>
+        <div class="progress-bar">
+            <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <button class="close-btn" onclick="closeProgress()">Close</button>
+    </div>
+
+    <script>
+        // Function to open the progress bar modal
+        function openProgress() {
+            console.log("openProgress function called");
+            const modal = document.getElementById('progressModal');
+            const fill = document.getElementById('progressFill');
+            modal.classList.remove('hidden');
+            fill.style.width = '50%'; // Set width to 50% for demo purposes
+        }
+
+        // Function to close the progress bar modal
+        function closeProgress() {
+            console.log("closeProgress function called");
+            window.location.href = '/tracker/progress/';
+        }
+    </script>
+</body>
+</html>

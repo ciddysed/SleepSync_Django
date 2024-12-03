@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate, logout
 from .models import ProgressTracking, SleepTrack, User
 from .forms import ProgressTrackingForm, SleepTrackForm, UserRegistrationForm, LoginForm
@@ -480,3 +480,6 @@ def update_wake_time(request):
             user.save()
             return redirect('sleep_tips')  # Redirect to the sleep tips page or wherever appropriate.
     return redirect('sleep_tips')  # Redirect in case of invalid form submission or GET request.
+
+def progress_bar_view(request):
+    return render(request, 'tracker/progress_bar.html')
