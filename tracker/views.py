@@ -11,10 +11,17 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime, timedelta
+from django.contrib.auth.models import User
 
 @login_required
 def profile_view(request):
     return render(request, 'tracker/profile.html', {'user': request.user})
+# Add this decorator to ensure only logged-in users can access
+def admin_dashboard(request):
+    """Render the admin dashboard with user list."""
+    # Get all users from your custom User model
+    users = User.objects.all()
+    return render(request, 'tracker/admin_dashboard.html', {'users': users})
 
 def profile(request):
     user = request.user
@@ -157,7 +164,7 @@ def user_update(request, pk):
         form = UserForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('user_list')
+            return redirect('admin_dashboard')
     else:
         form = UserForm(instance=user)
     return render(request, 'tracker/user_form.html', {'form': form})
@@ -166,7 +173,7 @@ def user_delete(request, pk):
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
         user.delete()
-        return redirect('user_list')
+        return redirect('admin_dashboard')
     return render(request, 'tracker/user_confirm_delete.html', {'user': user})
 
 
@@ -534,3 +541,4 @@ def sleep_duration_graph(request):
         'dates': dates
     }
     return render(request, 'tracker/sleep_duration_graph.html', context)
+

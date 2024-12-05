@@ -4,95 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete User - SleepSync</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
+        :root {
+            --primary: #6b4e71;
+            --primary-light: #9b6b9e;
+            --text: #2c1810;
+            --gradient-start: rgba(44, 24, 48, 0.9);
+            --gradient-end: rgba(107, 78, 113, 0.9);
+            --danger: #ff4444;
+            --danger-hover: #ff6666;
+        }
+
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #9b6b9e 0%, #6b4e71 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            color: #2c1810;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%),
+                        url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+            padding-top: 80px;
         }
 
-        .container {
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            text-align: center;
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .logo {
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .nav-logo {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .logo svg {
-            width: 30px;
-            height: 30px;
-            fill: #6b4e71;
-        }
-
-        .logo-text {
-            font-size: 24px;
-            font-weight: bold;
-            color: #6b4e71;
-            letter-spacing: 1px;
-        }
-
-        h2 {
-            color: #6b4e71;
-            margin: 20px 0;
-            font-size: 24px;
-        }
-
-        p {
-            color: #2c1810;
-            font-size: 16px;
-            margin: 20px 0;
-        }
-
-        .user-name {
-            color: #6b4e71;
-            font-weight: 500;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px 25px;
-            margin: 20px 0;
-            border: none;
-            border-radius: 8px;
-            background-color: #ff4444;
             color: white;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #ff6666;
-        }
-
-        .cancel-link {
-            display: inline-block;
             text-decoration: none;
-            color: #6b4e71;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            margin-top: 10px;
+            transition: transform 0.3s ease;
         }
 
-        .cancel-link:hover {
-            color: #9b6b9e;
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-logo svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .nav-logo span {
+            font-weight: bold;
+            font-size: 1.2rem;
         }
 
         .stars {
@@ -101,30 +87,231 @@
             height: 100%;
             pointer-events: none;
             background: 
-                radial-gradient(1px 1px at 20px 30px, white, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 40px 70px, white, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 50px 160px, white, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 90px 40px, white, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 130px 80px, white, rgba(0,0,0,0));
+                radial-gradient(2px 2px at 20px 30px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, white, rgba(0,0,0,0));
+            animation: twinkle 5s infinite;
+            z-index: 0;
+        }
+
+        .moon {
+            position: fixed;
+            top: 50px;
+            right: 50px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #f4f4f4);
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+            animation: moonGlow 4s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        @keyframes moonGlow {
+            0%, 100% { box-shadow: 0 0 50px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 70px rgba(255, 255, 255, 0.7); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.5; }
+        }
+
+        .main-content {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .warning-group {
+            background: rgba(255, 68, 68, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            animation: slideIn 0.6s ease-out backwards;
+            text-align: center;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .warning-icon {
+            font-size: 3rem;
+            color: var(--danger);
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            color: white;
+            font-size: 1.15rem;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .user-name {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-weight: 500;
+            margin: 0 0.3rem;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn i {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover i {
+            transform: scale(1.2);
+        }
+
+        .btn-delete {
+            background: var(--danger);
+        }
+
+        .btn-delete:hover {
+            background: var(--danger-hover);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .moon {
+                width: 60px;
+                height: 60px;
+                top: 20px;
+                right: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="stars"></div>
-    <div class="container">
-        <div class="logo">
-            <svg viewBox="0 0 24 24">
-                <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
-            </svg>
-            <span class="logo-text">SleepSync</span>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="{% url 'landing_page' %}" class="nav-logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
+                </svg>
+                <span>SleepSync</span>
+            </a>
         </div>
-        <h2>Delete User</h2>
-        <p>Are you sure you want to delete <span class="user-name">{{ user.name }}</span>?</p>
-        <form method="post">
-            {% csrf_token %}
-            <button type="submit">Delete User</button>
-        </form>
-        <a href="{% url 'user_list' %}" class="cancel-link">Cancel</a>
+    </nav>
+
+    <div class="stars"></div>
+    <div class="moon"></div>
+
+    <div class="main-content">
+        <div class="container">
+            <h2>Delete User</h2>
+
+            <div class="warning-group">
+                <i class="fas fa-exclamation-triangle warning-icon"></i>
+                <p>Are you sure you want to delete the user <span class="user-name">{{ user.name }}</span>?</p>
+                <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem;">This action cannot be undone.</p>
+            </div>
+
+            <form method="post" class="buttons">
+                {% csrf_token %}
+                <a href="{% url 'admin_dashboard' %}" class="btn">
+                    <i class="fas fa-times"></i>Cancel
+                </a>
+                <button type="submit" class="btn btn-delete">
+                    <i class="fas fa-trash"></i>Delete User
+                </button>
+            </form>
+        </div>
     </div>
 </body>
 </html>
