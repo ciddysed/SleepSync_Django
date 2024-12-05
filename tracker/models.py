@@ -9,12 +9,12 @@ class ProgressTracking(models.Model):  # Check this name
 
 class SleepTrack(models.Model):
     tracking_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)  # Correct the import issue
     date = models.DateField()
-    sleep_duration = models.TimeField()
+    sleep_duration = models.DurationField()  # Change to DurationField to store time intervals
     sleep_quality = models.CharField(max_length=15)
     sleep_stages = models.CharField(max_length=15)
-
-    schedule_id = models.IntegerField() 
+    schedule_id = models.IntegerField()
 
     def __str__(self):
         return f"{self.date} - {self.sleep_quality}"
@@ -46,7 +46,7 @@ class User(AbstractBaseUser):
     sleepTime = models.TimeField(null=True, blank=True)
     sleepGoals = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=True)  # Fix the syntax error
 
     objects = UserManager()
 
@@ -55,7 +55,6 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.email
-
 
 class RelaxationRoutine(models.Model):
     routineID = models.AutoField(primary_key=True)  # Auto-incrementing primary key

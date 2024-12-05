@@ -7,6 +7,10 @@ from django.contrib import messages
 from datetime import datetime
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from datetime import datetime, timedelta
 
 @login_required
 def profile_view(request):
@@ -476,7 +480,7 @@ def edit_wake_time(request):
 def update_wake_time(request):
     if request.method == 'POST':
         wake_time = request.POST.get('wake_time')
-        if wake_time:
+        if (wake_time):
             user = request.user
             user.preferredWakeTime = wake_time
             user.save()
@@ -485,3 +489,48 @@ def update_wake_time(request):
 
 def progress_bar_view(request):
     return render(request, 'tracker/progress_bar.html')
+
+def record_sleep(request):
+    return render(request, 'tracker/RecordSleep.html')
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+@csrf_exempt
+@login_required
+def record_sleep_time(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            sleep_time = datetime.strptime(data['sleep_time'], '%H:%M')
+            wake_time = datetime.strptime(data['wake_time'], '%H:%M')
+            
+            if wake_time < sleep_time:
+                wake_time += timedelta(days=1)
+            
+            sleep_duration = wake_time - sleep_time
+            SleepTrack.objects.create(
+                user=request.user,
+                date=datetime.now().date(),
+                sleep_duration=sleep_duration,
+                sleep_quality='Good',  # Placeholder, can be modified
+                sleep_stages='N/A',  # Placeholder, can be modified
+                schedule_id=1  # Placeholder, can be modified
+            )
+            return JsonResponse({'status': 'success'})
+        except Exception as e:
+            logger.error(f"Error recording sleep time: {e}")
+            return JsonResponse({'status': 'failed', 'error': str(e)})
+    return JsonResponse({'status': 'failed'})
+
+@login_required
+def sleep_duration_graph(request):
+    sleep_tracks = SleepTrack.objects.filter(user=request.user).order_by('-date')[:7]
+    sleep_durations = [track.sleep_duration.total_seconds() / 3600 for track in sleep_tracks]
+    dates = [track.date.strftime('%Y-%m-%d') for track in sleep_tracks]
+    context = {
+        'sleep_durations': sleep_durations,
+        'dates': dates
+    }
+    return render(request, 'tracker/sleep_duration_graph.html', context)

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Sleep - SleepSync</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6b4e71;
+            --primary-light: #9b6b9e;
+            --text: #2c1810;
+            --gradient-start: rgba(44, 24, 48, 0.9);
+            --gradient-end: rgba(107, 78, 113, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%),
+                        url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        input, textarea {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Record Your Sleep</h1>
+        <form id="sleep-form">
+            {% csrf_token %}
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required>
+            
+            <label for="sleep_time">Sleep Time</label>
+            <input type="time" id="sleep_time" name="sleep_time" required>
+            
+            <label for="wake_time">Wake Time</label>
+            <input type="time" id="wake_time" name="wake_time" required>
+            
+            <label for="sleep_quality">Sleep Quality</label>
+            <textarea id="sleep_quality" name="sleep_quality" rows="4" required></textarea>
+            
+            <button type="submit">Save</button>
+        </form>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const sleepDurations = [];
+
+            document.getElementById('sleep-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const sleepTime = document.getElementById('sleep_time').value;
+                const wakeTime = document.getElementById('wake_time').value;
+
+                const sleepDate = new Date(`1970-01-01T${sleepTime}:00`);
+                const wakeDate = new Date(`1970-01-01T${wakeTime}:00`);
+                let sleepDuration = (wakeDate - sleepDate) / (1000 * 60 * 60);
+                if (sleepDuration < 0) {
+                    sleepDuration += 24;
+                }
+
+                sleepDurations.push(sleepDuration);
+
+                fetch("{% url 'record_sleep_time' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({ sleep_time: sleepTime, wake_time: wakeTime, sleep_duration: sleepDuration })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Sleep time recorded successfully!');
+                        if (sleepDurations.length === 7) {
+                            window.location.href = "{% url 'sleep_duration_graph' %}";
+                        }
+                    } else {
+                        alert('Failed to record sleep time: ' + data.error);
+                    }
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>

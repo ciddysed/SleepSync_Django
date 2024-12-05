@@ -47,5 +47,8 @@ urlpatterns = [
 
     path('edit-wake-time/', views.edit_wake_time, name='edit_wake_time'),
     path('update-wake-time/', views.update_wake_time, name='update_wake_time'),
+    path('record_sleep/', views.record_sleep, name='record_sleep'),
+    path('record_sleep_time/', views.record_sleep_time, name='record_sleep_time'),
+    path('sleep_duration_graph/', views.sleep_duration_graph, name='sleep_duration_graph'),
 
 ]

@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Duration - SleepSync</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            width: 100%;
+        }
+        h1 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: #6b4e71;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sleep Duration Over 7 Days</h1>
+        <canvas id="sleepChart"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const sleepDurations = JSON.parse('{{ sleep_durations|escapejs }}');
+
+            const ctx = document.getElementById('sleepChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+                    datasets: [{
+                        label: 'Sleep Duration (hours)',
+                        data: sleepDurations,
+                        backgroundColor: 'rgba(107, 78, 113, 0.6)',
+                        borderColor: 'rgba(107, 78, 113, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

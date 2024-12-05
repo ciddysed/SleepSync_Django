@@ -17,7 +17,7 @@ class SleepTrackForm(forms.ModelForm):
         fields = ['date', 'sleep_duration', 'sleep_quality', 'sleep_stages', 'schedule_id']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
-            'sleep_duration': forms.TimeInput(attrs={'type': 'time'}),
+            'sleep_duration': forms.DurationField(),
         }
 
 class RelaxationRoutineForm(forms.ModelForm):
