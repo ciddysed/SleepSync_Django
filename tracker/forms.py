@@ -36,10 +36,11 @@ class SmartAlarmForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'name', 'preferredWakeTime', 'sleepGoals']
+        fields = ['email', 'first_name', 'last_name', 'name', 'preferredWakeTime', 'sleepGoals', 'sleepTime']
         widgets = {
             'preferredWakeTime': forms.TimeInput(attrs={'type': 'time'}),
             'wake_time': forms.TimeInput(attrs={'type': 'time'}),
+            'sleepTime': forms.TimeInput(attrs={'type': 'time'}),
         }
 
 class UserRegistrationForm(forms.ModelForm):
@@ -47,9 +48,10 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'password', 'preferredWakeTime', 'sleepGoals']
+        fields = ['first_name', 'last_name', 'email', 'password', 'sleepTime', 'preferredWakeTime', 'sleepGoals']
         widgets = {
             'preferredWakeTime': forms.TimeInput(attrs={'type': 'time'}),
+            'sleepTime': forms.TimeInput(attrs={'type': 'time'}),
         }
 
     def clean_email(self):

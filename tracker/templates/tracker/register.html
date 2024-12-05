@@ -322,6 +322,9 @@
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
+            <!-- Remove the duplicated sleepTime input field -->
+            <!-- <label for="id_sleepTime">Sleep Time:</label>
+            <input type="time" name="sleepTime" id="id_sleepTime"> -->
             <button type="submit">
                 <i class="fas fa-user-plus"></i>
                 Register

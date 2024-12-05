@@ -43,6 +43,7 @@ class User(AbstractBaseUser):
     name = models.CharField(max_length=100, blank=True)
     preferredWakeTime = models.TimeField(null=True, blank=True)
     wake_time = models.TimeField(null=True, blank=True)
+    sleepTime = models.TimeField(null=True, blank=True)
     sleepGoals = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

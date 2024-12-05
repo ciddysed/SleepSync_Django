@@ -26,11 +26,13 @@ def edit_profile(request):
         preferred_wake_time = request.POST.get('preferredWakeTime')
         sleep_goals = request.POST.get('sleepGoals')
         profile_picture = request.FILES.get('profile_picture')
+        sleep_time = request.POST.get('sleepTime')
 
         user.first_name = first_name
         user.last_name = last_name
         user.preferredWakeTime = preferred_wake_time
         user.sleepGoals = sleep_goals
+        user.sleepTime = sleep_time
 
         if profile_picture:
             user.profile_picture = profile_picture
