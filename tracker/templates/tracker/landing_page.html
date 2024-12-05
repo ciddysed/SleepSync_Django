@@ -241,15 +241,18 @@
             background: rgba(255, 255, 255, 0.1);
             color: white;
             text-decoration: none;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
+            padding: 2rem; /* Adjust padding for square shape */
+            border-radius: 20px; /* More rounded corners for tile effect */
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.8rem;
+            gap: 1rem; /* Increased gap for better spacing */
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
             font-weight: 500;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Added shadow for tile effect */
+            width: 100%; /* Ensure square shape */
+            height: 100%; /* Ensure square shape */
         }
 
         .button:hover {
@@ -259,7 +262,7 @@
         }
 
         .button i {
-            font-size: 1.2rem;
+            font-size: 1.5rem; /* Increased icon size */
             transition: transform 0.3s ease;
         }
 
@@ -361,9 +364,7 @@
                 </div>
 
                 <div class="button-container">
-                    <a href="{% url 'user_list' %}" class="button">
-                        <i class="fas fa-users"></i> User Management
-                    </a>
+                    
                     <a href="{% url 'sleeptrack_list' %}" class="button">
                         <i class="fas fa-chart-line"></i> Sleep Tracking
                     </a>
@@ -381,6 +382,9 @@
                     </a>
                     <a href="{% url 'record_sleep' %}" class="button">
                         <i class="fas fa-bed"></i> Record Sleep
+                    </a>
+                    <a href="{% url 'sleep_duration_graph' %}" class="button">
+                        <i class="fas fa-chart-bar"></i> Daily Sleep Progress
                     </a>
                 </div>
             {% else %}

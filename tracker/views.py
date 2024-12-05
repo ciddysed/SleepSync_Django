@@ -523,14 +523,3 @@ def record_sleep_time(request):
             logger.error(f"Error recording sleep time: {e}")
             return JsonResponse({'status': 'failed', 'error': str(e)})
     return JsonResponse({'status': 'failed'})
-
-@login_required
-def sleep_duration_graph(request):
-    sleep_tracks = SleepTrack.objects.filter(user=request.user).order_by('-date')[:7]
-    sleep_durations = [track.sleep_duration.total_seconds() / 3600 for track in sleep_tracks]
-    dates = [track.date.strftime('%Y-%m-%d') for track in sleep_tracks]
-    context = {
-        'sleep_durations': sleep_durations,
-        'dates': dates
-    }
-    return render(request, 'tracker/sleep_duration_graph.html', context)

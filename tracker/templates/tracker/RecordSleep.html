@@ -39,7 +39,7 @@
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             padding: 3rem;
@@ -93,6 +93,45 @@
             background: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
         }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -109,50 +148,98 @@
             <label for="wake_time">Wake Time</label>
             <input type="time" id="wake_time" name="wake_time" required>
             
-            <label for="sleep_quality">Sleep Quality</label>
-            <textarea id="sleep_quality" name="sleep_quality" rows="4" required></textarea>
-            
             <button type="submit">Save</button>
         </form>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            const sleepDurations = [];
-
-            document.getElementById('sleep-form').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const sleepTime = document.getElementById('sleep_time').value;
-                const wakeTime = document.getElementById('wake_time').value;
-
-                const sleepDate = new Date(`1970-01-01T${sleepTime}:00`);
-                const wakeDate = new Date(`1970-01-01T${wakeTime}:00`);
-                let sleepDuration = (wakeDate - sleepDate) / (1000 * 60 * 60);
-                if (sleepDuration < 0) {
-                    sleepDuration += 24;
-                }
-
-                sleepDurations.push(sleepDuration);
-
-                fetch("{% url 'record_sleep_time' %}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify({ sleep_time: sleepTime, wake_time: wakeTime, sleep_duration: sleepDuration })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        alert('Sleep time recorded successfully!');
-                        if (sleepDurations.length === 7) {
-                            window.location.href = "{% url 'sleep_duration_graph' %}";
-                        }
-                    } else {
-                        alert('Failed to record sleep time: ' + data.error);
-                    }
-                });
-            });
-        </script>
     </div>
+
+    <!-- Modal for displaying sleep duration graph -->
+    <div id="sleepModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sleep Duration Over 7 Days</h2>
+            <canvas id="sleepChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const sleepDurations = [];
+        const dates = [];
+
+        document.getElementById('sleep-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const sleepTime = document.getElementById('sleep_time').value;
+            const wakeTime = document.getElementById('wake_time').value;
+
+            const sleepDate = new Date(`1970-01-01T${sleepTime}:00`);
+            const wakeDate = new Date(`1970-01-01T${wakeTime}:00`);
+            let sleepDuration = (wakeDate - sleepDate) / (1000 * 60 * 60);
+            if (sleepDuration < 0) {
+                sleepDuration += 24;
+            }
+
+            sleepDurations.push(sleepDuration);
+            dates.push(document.getElementById('date').value);
+
+            fetch("{% url 'record_sleep_time' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ sleep_time: sleepTime, wake_time: wakeTime, sleep_duration: sleepDuration })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Sleep time recorded successfully!');
+                    if (sleepDurations.length === 7) {
+                        showModal();
+                    }
+                } else {
+                    alert('Failed to record sleep time: ' + data.error);
+                }
+            });
+        });
+
+        function showModal() {
+            const modal = document.getElementById('sleepModal');
+            const closeBtn = document.getElementsByClassName('close')[0];
+
+            modal.style.display = 'flex';
+
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+
+            const ctx = document.getElementById('sleepChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Sleep Duration (hours)',
+                        data: sleepDurations,
+                        backgroundColor: 'rgba(107, 78, 113, 0.6)',
+                        borderColor: 'rgba(107, 78, 113, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>
