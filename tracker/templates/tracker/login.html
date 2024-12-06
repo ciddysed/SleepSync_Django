@@ -32,6 +32,25 @@
             position: relative;
             overflow: hidden;
         }
+        .admin-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .admin-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
 
         .night-sky {
             position: fixed;
@@ -261,6 +280,10 @@
     <div class="night-sky"></div>
     <div class="clouds"></div>
     <div class="stars"></div>
+
+    <a href="{% url 'admin_dashboard' %}" class="admin-button">Go to Admin Dashboard</a>
+
+    
 
     <div class="container">
         <button class="logo" onclick="window.location.href='{% url 'landing_page' %}'">

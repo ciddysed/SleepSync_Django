@@ -11,11 +11,19 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime, timedelta
+from django.contrib.auth.models import User
 from django.template.loader import render_to_string
+
 
 @login_required
 def profile_view(request):
     return render(request, 'tracker/profile.html', {'user': request.user})
+
+def admin_dashboard(request):
+    """Render the admin dashboard with user list."""
+    # Get all users from your custom User model
+    users = User.objects.all()
+    return render(request, 'tracker/admin_dashboard.html', {'users': users})
 
 def profile(request):
     user = request.user

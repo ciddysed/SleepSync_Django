@@ -32,6 +32,9 @@ class SmartAlarmForm(forms.ModelForm):
     class Meta:
         model = SmartAlarm
         fields = ['alarmTime']
+        widgets = {
+            'alarmTime': forms.TimeInput(attrs={'type': 'time'}),
+        }
 
 class UserForm(forms.ModelForm):
     class Meta:

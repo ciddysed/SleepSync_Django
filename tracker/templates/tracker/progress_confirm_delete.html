@@ -3,91 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirm Delete</title>
+    <title>SleepSync - Confirm Delete</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
+        :root {
+            --primary: #6b4e71;
+            --primary-light: #9b6b9e;
+            --text: #2c1810;
+            --gradient-start: rgba(44, 24, 48, 0.9);
+            --gradient-end: rgba(107, 78, 113, 0.9);
+            --danger: #ff4444;
+            --danger-hover: #ff6666;
+        }
+
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #9b6b9e 0%, #6b4e71 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            color: #2c1810;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            text-align: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .logo svg {
-            width: 30px;
-            height: 30px;
-            fill: #6b4e71;
-        }
-
-        .logo-text {
-            font-size: 24px;
-            font-weight: bold;
-            color: #6b4e71;
-            letter-spacing: 1px;
-        }
-
-        h1 {
-            color: #6b4e71;
-            margin: 20px 0;
-        }
-
-        p {
-            color: #2c1810;
-            font-size: 16px;
-            margin: 20px 0;
-        }
-
-        button {
-            padding: 12px 25px;
-            margin: 20px 0;
-            border: none;
-            border-radius: 8px;
-            background-color: #ff4444;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%),
+                        url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             color: white;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
+            padding-top: 80px;
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        button:hover {
-            background-color: #ff6666;
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
         }
 
-        .cancel-link {
-            display: inline-block;
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
             text-decoration: none;
-            color: #6b4e71;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            margin-top: 10px;
+            transition: transform 0.3s ease;
         }
 
-        .cancel-link:hover {
-            color: #9b6b9e;
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-logo svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .nav-logo span {
+            font-weight: bold;
+            font-size: 1.2rem;
         }
 
         .stars {
@@ -96,30 +87,177 @@
             height: 100%;
             pointer-events: none;
             background: 
-                radial-gradient(1px 1px at 20px 30px, white, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 40px 70px, white, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 50px 160px, white, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 90px 40px, white, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 130px 80px, white, rgba(0,0,0,0));
+                radial-gradient(2px 2px at 20px 30px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, white, rgba(0,0,0,0));
+            animation: twinkle 5s infinite;
+            z-index: 0;
+        }
+
+        .moon {
+            position: fixed;
+            top: 50px;
+            right: 50px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #f4f4f4);
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+            animation: moonGlow 4s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        @keyframes moonGlow {
+            0%, 100% { box-shadow: 0 0 50px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 70px rgba(255, 255, 255, 0.7); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.5; }
+        }
+
+        .main-content {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            animation: fadeIn 1s ease-out;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-delete:hover {
+            background: var(--danger-hover);
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .moon {
+                width: 60px;
+                height: 60px;
+                top: 20px;
+                right: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="stars"></div>
-    <div class="container">
-        <div class="logo">
-            <svg viewBox="0 0 24 24">
-                <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
-            </svg>
-            <span class="logo-text">SleepSync</span>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="{% url 'landing_page' %}" class="nav-logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
+                </svg>
+                <span>SleepSync</span>
+            </a>
         </div>
-        <h1>Confirm Delete</h1>
-        <p>Are you sure you want to delete "{{ progress }}"?</p>
-        <form method="POST">
-            {% csrf_token %}
-            <button type="submit">Delete Progress</button>
-        </form>
-        <a href="{% url 'progress_list' %}" class="cancel-link">Cancel</a>
+    </nav>
+
+    <div class="stars"></div>
+    <div class="moon"></div>
+
+    <div class="main-content">
+        <div class="container">
+            <h2>Confirm Delete</h2>
+            <p>Are you sure you want to delete "{{ progress }}"?</p>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="button-group">
+                    <button type="submit" class="btn btn-delete">
+                        <i class="fas fa-trash"></i> Delete Progress
+                    </button>
+                    <a href="{% url 'progress_list' %}" class="btn btn-cancel">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>

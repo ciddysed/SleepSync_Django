@@ -31,10 +31,100 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             color: white;
+            padding-top: 80px;
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-logo svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .nav-logo span {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: 
+                radial-gradient(2px 2px at 20px 30px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, white, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, white, rgba(0,0,0,0));
+            animation: twinkle 5s infinite;
+            z-index: 0;
+        }
+
+        .moon {
+            position: fixed;
+            top: 50px;
+            right: 50px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #f4f4f4);
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+            animation: moonGlow 4s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        @keyframes moonGlow {
+            0%, 100% { box-shadow: 0 0 50px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 70px rgba(255, 255, 255, 0.7); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.5; }
+        }
+
+        .main-content {
+            min-height: calc(100vh - 80px);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         .container {
@@ -44,10 +134,7 @@
             backdrop-filter: blur(10px);
             padding: 3rem;
             border-radius: 20px;
-            text-align: center;
             animation: fadeIn 1s ease-out;
-            position: relative;
-            z-index: 1;
         }
 
         @keyframes fadeIn {
@@ -58,6 +145,7 @@
         h1 {
             font-size: 2.5rem;
             color: white;
+            text-align: center;
             margin-bottom: 2rem;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
@@ -96,48 +184,148 @@
 
         /* Modal styles */
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+}
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 800px;
-            border-radius: 10px;
-        }
+.modal-content {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    margin: 2% auto;
+    width: 90%;
+    max-width: 1200px;
+    max-height: 90vh;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow-y: auto;
+    color: white;
+    padding: 0;
+}
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: white;
+}
 
-        .report-section {
-            margin-top: 20px;
-            text-align: left;
-        }
+.close {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    padding: 0.5rem;
+}
 
+.close:hover {
+    opacity: 0.7;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+.chart-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chart-card h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.report-section {
+    background: rgba(255, 255, 255, 0.05);
+    margin: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.report-section h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    color: white;
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.report-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.report-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.report-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
+}
+
+canvas {
+    width: 100% !important;
+    background: transparent;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    .report-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-header {
+        padding: 1rem;
+    }
+
+    .report-section {
+        margin: 1rem;
+    }
+}
         .report-section h2 {
             font-size: 1.5rem;
             margin-bottom: 10px;
@@ -150,6 +338,9 @@
 
         canvas {
             margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
         }
 
         .header-section {
@@ -167,6 +358,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
             justify-content: center;
             align-items: center;
             z-index: 1001;
@@ -204,53 +396,113 @@
         }
 
         @keyframes fadeInOut {
-            0%, 100% {
-                opacity: 0;
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
             }
-            50% {
-                opacity: 1;
+            
+            .header-section {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .moon {
+                width: 60px;
+                height: 60px;
+                top: 20px;
+                right: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-section">
-            <h1>Record Your Sleep</h1>
-            <button id="track-progress-button">Track Sleep Progress</button>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="{% url 'landing_page' %}" class="nav-logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 7h-8v8H3V7H1v10h2v3c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3h2V7h-2zM7 19h10v-6H7v6z"/>
+                </svg>
+                <span>SleepSync</span>
+            </a>
         </div>
-        <form id="sleep-form">
-            {% csrf_token %}
-            <label for="date">Date</label>
-            <input type="date" id="date" name="date" required>
-            
-            <label for="sleep_time">Sleep Time</label>
-            <input type="time" id="sleep_time" name="sleep_time" required>
-            
-            <label for="wake_time">Wake Time</label>
-            <input type="time" id="wake_time" name="wake_time" required>
-            
-            <button type="submit" id="save-button">Save</button>
-        </form>
-        <div id="task-cards-container"></div>
-        <button id="done-button" style="display: none;">Mark Tasks as Done</button>
+    </nav>
+
+    <div class="stars"></div>
+    <div class="moon"></div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="header-section">
+                <h1>Record Your Sleep</h1>
+                <button id="track-progress-button">Track Sleep Progress</button>
+            </div>
+            <form id="sleep-form">
+                {% csrf_token %}
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" required>
+                
+                <label for="sleep_time">Sleep Time</label>
+                <input type="time" id="sleep_time" name="sleep_time" required>
+                
+                <label for="wake_time">Wake Time</label>
+                <input type="time" id="wake_time" name="wake_time" required>
+                
+                <button type="submit" id="save-button">Save</button>
+            </form>
+            <div id="task-cards-container"></div>
+            <button id="done-button" style="display: none;">Mark Tasks as Done</button>
+        </div>
     </div>
 
     <!-- Modal for displaying sleep duration graph -->
     <div id="sleepModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Sleep Duration Over Time</h2>
-            <canvas id="sleepChart"></canvas>
-            <h2>Sleep Duration Line Chart</h2>
-            <canvas id="sleepLineChart"></canvas>
-            <h2>Sleep Duration Area Chart</h2>
-            <canvas id="sleepAreaChart"></canvas>
+            <div class="modal-header">
+                <h2>Sleep Analysis Dashboard</h2>
+                <span class="close">&times;</span>
+            </div>
+            
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>Sleep Duration Over Time</h3>
+                    <canvas id="sleepChart"></canvas>
+                </div>
+                
+                <div class="chart-card">
+                    <h3>Sleep Duration Trend</h3>
+                    <canvas id="sleepLineChart"></canvas>
+                </div>
+                
+                <div class="chart-card">
+                    <h3>Sleep Pattern Overview</h3>
+                    <canvas id="sleepAreaChart"></canvas>
+                </div>
+            </div>
+    
             <div class="report-section">
-                <h2>Sleep Reports</h2>
-                <p>Average Sleep Duration: <span id="avgSleepDuration"></span> hours</p>
-                <p>Average Sleep Time: <span id="avgSleepTime"></span></p>
-                <p>Average Wake-Up Time: <span id="avgWakeTime"></span></p>
+                <h3>Sleep Analysis Report</h3>
+                <div class="report-grid">
+                    <div class="report-item">
+                        <span class="report-label">Average Sleep Duration</span>
+                        <span class="report-value"><span id="avgSleepDuration"></span> hours</span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">Average Sleep Time</span>
+                        <span class="report-value"><span id="avgSleepTime"></span></span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">Average Wake Time</span>
+                        <span class="report-value"><span id="avgWakeTime"></span></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
