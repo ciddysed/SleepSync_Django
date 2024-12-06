@@ -25,7 +25,7 @@
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%),
-                        url('/api/placeholder/1920/1080');
+                        url('/static/images/placeholder.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -115,7 +115,7 @@
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
-            max-width: 600px;
+            max-width: 800px;
             border-radius: 10px;
         }
 
@@ -132,11 +132,93 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        .report-section {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .report-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .report-section p {
+            font-size: 1.1rem;
+            margin: 5px 0;
+        }
+
+        canvas {
+            margin-bottom: 20px;
+        }
+
+        .header-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .fireworks-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: white;
+            border-radius: 50%;
+            animation: firework 1s ease-out infinite;
+        }
+
+        .congratulations-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2rem;
+            text-align: center;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+
+        @keyframes firework {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(10);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Record Your Sleep</h1>
+        <div class="header-section">
+            <h1>Record Your Sleep</h1>
+            <button id="track-progress-button">Track Sleep Progress</button>
+        </div>
         <form id="sleep-form">
             {% csrf_token %}
             <label for="date">Date</label>
@@ -148,38 +230,77 @@
             <label for="wake_time">Wake Time</label>
             <input type="time" id="wake_time" name="wake_time" required>
             
-            <button type="submit">Save</button>
+            <button type="submit" id="save-button">Save</button>
         </form>
+        <div id="task-cards-container"></div>
+        <button id="done-button" style="display: none;">Mark Tasks as Done</button>
     </div>
 
     <!-- Modal for displaying sleep duration graph -->
     <div id="sleepModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Sleep Duration Over 7 Days</h2>
+            <h2>Sleep Duration Over Time</h2>
             <canvas id="sleepChart"></canvas>
+            <h2>Sleep Duration Line Chart</h2>
+            <canvas id="sleepLineChart"></canvas>
+            <h2>Sleep Duration Area Chart</h2>
+            <canvas id="sleepAreaChart"></canvas>
+            <div class="report-section">
+                <h2>Sleep Reports</h2>
+                <p>Average Sleep Duration: <span id="avgSleepDuration"></span> hours</p>
+                <p>Average Sleep Time: <span id="avgSleepTime"></span></p>
+                <p>Average Wake-Up Time: <span id="avgWakeTime"></span></p>
+            </div>
         </div>
+    </div>
+
+    <!-- Fireworks animation -->
+    <div id="fireworks-container" class="fireworks-container">
+        <div class="firework"></div>
+        <div class="firework"></div>
+        <div class="firework"></div>
+        <div class="firework"></div>
+        <div class="firework"></div>
+        <div class="congratulations-message">Congratulations! You have completed all the activities for the day!</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const sleepDurations = [];
-        const dates = [];
+        let sleepDurations = [];
+        let dates = [];
+        let sleepTimes = [];
+        let wakeTimes = [];
+        let sleepChart = null;
+        let sleepLineChart = null;
+        let sleepAreaChart = null;
+        const prompts = [
+            "Great job! Keep tracking your sleep.",
+            "Sleep data saved! You're doing awesome.",
+            "Another night recorded! Keep it up.",
+            "Well done! Your sleep data is valuable.",
+            "Sleep time recorded! Stay consistent.",
+            "Good work! Tracking sleep helps improve it.",
+            "Sleep data saved! Keep monitoring your patterns."
+        ];
 
         document.getElementById('sleep-form').addEventListener('submit', function(event) {
             event.preventDefault();
             const sleepTime = document.getElementById('sleep_time').value;
             const wakeTime = document.getElementById('wake_time').value;
+            const date = document.getElementById('date').value;
 
-            const sleepDate = new Date(`1970-01-01T${sleepTime}:00`);
-            const wakeDate = new Date(`1970-01-01T${wakeTime}:00`);
-            let sleepDuration = (wakeDate - sleepDate) / (1000 * 60 * 60);
-            if (sleepDuration < 0) {
-                sleepDuration += 24;
+            const sleepDateTime = new Date(`${date}T${sleepTime}:00`);
+            const wakeDateTime = new Date(`${date}T${wakeTime}:00`);
+            if (wakeDateTime < sleepDateTime) {
+                wakeDateTime.setDate(wakeDateTime.getDate() + 1);  // Adjust wakeDateTime to the next day
             }
+            const sleepDuration = (wakeDateTime - sleepDateTime) / (1000 * 60 * 60);
 
             sleepDurations.push(sleepDuration);
-            dates.push(document.getElementById('date').value);
+            dates.push(date);
+            sleepTimes.push(sleepTime);
+            wakeTimes.push(wakeTime);
 
             fetch("{% url 'record_sleep_time' %}", {
                 method: 'POST',
@@ -192,14 +313,35 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    alert('Sleep time recorded successfully!');
-                    if (sleepDurations.length === 7) {
-                        showModal();
-                    }
+                    const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+                    alert(randomPrompt);
+                    document.getElementById('task-cards-container').innerHTML = data.task_cards;
+                    document.getElementById('sleep-form').reset();
+                    document.getElementById('save-button').style.display = 'none';
+                    document.getElementById('done-button').style.display = 'block';
+                    initializeTaskCardListeners();
                 } else {
                     alert('Failed to record sleep time: ' + data.error);
                 }
             });
+        });
+
+        document.getElementById('done-button').addEventListener('click', function() {
+            const allChecked = Array.from(document.querySelectorAll('.task-card input[type="checkbox"]')).every(cb => cb.checked);
+            if (allChecked) {
+                showFireworks();
+                setTimeout(() => {
+                    document.getElementById('save-button').style.display = 'block';
+                    document.getElementById('done-button').style.display = 'none';
+                    document.getElementById('task-cards-container').innerHTML = '';
+                }, 3000);
+            } else {
+                alert("Please complete all tasks before proceeding.");
+            }
+        });
+
+        document.getElementById('track-progress-button').addEventListener('click', function() {
+            showModal();
         });
 
         function showModal() {
@@ -218,8 +360,20 @@
                 }
             }
 
-            const ctx = document.getElementById('sleepChart').getContext('2d');
-            new Chart(ctx, {
+            if (sleepChart) {
+                sleepChart.destroy();
+            }
+
+            if (sleepLineChart) {
+                sleepLineChart.destroy();
+            }
+
+            if (sleepAreaChart) {
+                sleepAreaChart.destroy();
+            }
+
+            const ctxBar = document.getElementById('sleepChart').getContext('2d');
+            sleepChart = new Chart(ctxBar, {
                 type: 'bar',
                 data: {
                     labels: dates,
@@ -239,6 +393,96 @@
                     }
                 }
             });
+
+            const ctxLine = document.getElementById('sleepLineChart').getContext('2d');
+            sleepLineChart = new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Sleep Duration (hours)',
+                        data: sleepDurations,
+                        backgroundColor: 'rgba(107, 78, 113, 0.2)',
+                        borderColor: 'rgba(107, 78, 113, 1)',
+                        borderWidth: 1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            const ctxArea = document.getElementById('sleepAreaChart').getContext('2d');
+            sleepAreaChart = new Chart(ctxArea, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Sleep Duration (hours)',
+                        data: sleepDurations,
+                        backgroundColor: 'rgba(107, 78, 113, 0.4)',
+                        borderColor: 'rgba(107, 78, 113, 1)',
+                        borderWidth: 1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            updateReports();
+        }
+
+        function updateReports() {
+            const avgSleepDuration = (sleepDurations.reduce((a, b) => a + b, 0) / sleepDurations.length).toFixed(2);
+            const avgSleepTime = calculateAverageTime(sleepTimes);
+            const avgWakeTime = calculateAverageTime(wakeTimes);
+
+            document.getElementById('avgSleepDuration').innerText = avgSleepDuration;
+            document.getElementById('avgSleepTime').innerText = avgSleepTime;
+            document.getElementById('avgWakeTime').innerText = avgWakeTime;
+        }
+
+        function calculateAverageTime(times) {
+            const totalMinutes = times.reduce((total, time) => {
+                const [hours, minutes] = time.split(':').map(Number);
+                return total + hours * 60 + minutes;
+            }, 0);
+            const avgMinutes = totalMinutes / times.length;
+            const avgHours = Math.floor(avgMinutes / 60);
+            const avgMins = Math.round(avgMinutes % 60);
+            return `${String(avgHours).padStart(2, '0')}:${String(avgMins).padStart(2, '0')}`;
+        }
+
+        function initializeTaskCardListeners() {
+            document.querySelectorAll('.task-card input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const allChecked = Array.from(document.querySelectorAll('.task-card input[type="checkbox"]')).every(cb => cb.checked);
+                    if (allChecked) {
+                        document.getElementById('done-button').disabled = false;
+                    } else {
+                        document.getElementById('done-button').disabled = true;
+                    }
+                });
+            });
+        }
+
+        function showFireworks() {
+            const fireworksContainer = document.getElementById('fireworks-container');
+            fireworksContainer.style.display = 'flex';
+            setTimeout(() => {
+                fireworksContainer.style.display = 'none';
+            }, 3000);
         }
     </script>
 </body>

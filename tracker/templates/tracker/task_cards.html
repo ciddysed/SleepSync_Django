@@ -1,0 +1,93 @@
+<div class="task-cards">
+    <h3>Sleep Duration: {{ effects.range }}</h3>
+    <div class="effects-container">
+        <h4>Effects on the Body:</h4>
+        <div class="effects-cards">
+            {% for effect in effects.effects %}
+            <div class="effect-card">
+                <div class="effect-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+                    </svg>
+                </div>
+                <p>{{ effect }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="tasks-container">
+        <h4>Recommended Activities:</h4>
+        <div class="tasks-cards">
+            {% for task in effects.tasks %}
+            <div class="task-card">
+                <div class="task-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+                    </svg>
+                </div>
+                <input type="checkbox" class="task-checkbox" id="task-{{ forloop.counter }}" name="task-{{ forloop.counter }}">
+                <label for="task-{{ forloop.counter }}">{{ task }}</label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<style>
+    .task-cards {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .effects-container, .tasks-container {
+        margin-top: 20px;
+    }
+    .effects-cards, .tasks-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    .effect-card, .task-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 50px;
+        border-radius: 10px;
+        animation: fadeIn 1s ease-out;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .effect-icon, .task-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+    .effect-icon svg, .task-icon svg {
+        width: 20px;
+        height: 20px;
+        fill: white;
+    }
+    .effect-card p, .task-card label {
+        color: white;
+        margin: 0;
+    }
+    .task-card input[type="checkbox"] {
+        margin-right: 10px;
+    }
+</style>
+<script>
+    document.querySelectorAll('.task-card input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const allChecked = Array.from(document.querySelectorAll('.task-card input[type="checkbox"]')).every(cb => cb.checked);
+            if (allChecked) {
+                alert("Great job! You can now record your next sleep session.");
+                document.getElementById('submit-button').disabled = false;
+            }
+        });
+    });
+</script>

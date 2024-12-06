@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from datetime import timedelta
 
 class ProgressTracking(models.Model):  # Check this name
     progress_id = models.AutoField(primary_key=True)
@@ -11,7 +12,7 @@ class SleepTrack(models.Model):
     tracking_id = models.AutoField(primary_key=True)
     user = models.ForeignKey('User', on_delete=models.CASCADE)  # Correct the import issue
     date = models.DateField()
-    sleep_duration = models.DurationField()  # Change to DurationField to store time intervals
+    sleep_duration = models.FloatField()  # Change to FloatField to store duration in hours
     sleep_quality = models.CharField(max_length=15)
     sleep_stages = models.CharField(max_length=15)
     schedule_id = models.IntegerField()

@@ -11,6 +11,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime, timedelta
+from django.template.loader import render_to_string
 
 @login_required
 def profile_view(request):
@@ -497,29 +498,223 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+def get_sleep_effects(sleep_duration):
+    if sleep_duration < 4:
+        return {
+            'range': '<4 hours',
+            'effects': [
+                'Severe fatigue: Persistent exhaustion impacts daily functioning.',
+                'Cognitive impairment: Poor decision-making, focus, and memory.',
+                'Immune suppression: Higher susceptibility to colds, flu, and infections.',
+                'Hormonal imbalance: Increased cortisol (stress hormone) and reduced growth hormone production.'
+            ],
+            'tasks': [
+                'Power Naps: Take short naps (20–30 mins) to temporarily improve alertness.',
+                'Stress Reduction: Practice light stretching, meditation, or progressive muscle relaxation.',
+                'Limit Stimulants: Avoid caffeine, nicotine, and heavy meals late at night.',
+                'Hydration: Stay hydrated but avoid large quantities of water right before bed.'
+            ]
+        }
+    elif 4 <= sleep_duration < 6:
+        return {
+            'range': '4-6 hours',
+            'effects': [
+                'Memory issues: Short-term and working memory are significantly impaired.',
+                'Mood instability: Increased irritability, anxiety, and depressive symptoms.',
+                'Slower reaction times: Greater risk of accidents due to impaired motor coordination.',
+                'Physical fatigue: Weakness and reduced stamina during physical activities.'
+            ],
+            'tasks': [
+                'Deep Breathing & Yoga: Engage in calming exercises to manage stress levels.',
+                'Daylight Exposure: Spend time in natural light to reset the circadian clock.',
+                'Sleep Hygiene: Minimize screen time 1–2 hours before bed; instead, read a book or listen to soothing music.',
+                'Time Management: Organize your schedule to prioritize sleep and relaxation.'
+            ]
+        }
+    elif 6 <= sleep_duration < 8:
+        return {
+            'range': '6-8 hours',
+            'effects': [
+                'Sleep-deprived state: Considered insufficient for optimal health.',
+                'Reduced focus: Decreased productivity and problem-solving abilities.',
+                'Higher health risks: Prolonged sleep deprivation can lead to obesity, diabetes, and heart disease.',
+                'Weakened immunity: Reduced efficiency of the immune system over time.'
+            ],
+            'tasks': [
+                'Bedtime Routine: Establish a consistent routine with calming activities like journaling or listening to white noise.',
+                'Dietary Adjustments: Avoid alcohol, heavy meals, and sugary snacks at least 2–3 hours before sleep.',
+                'Exercise: Engage in moderate-intensity workouts earlier in the day to enhance sleep quality.',
+                'Blue Light Filters: Use blue light blocking glasses or night mode on devices.'
+            ]
+        }
+    elif 7 <= sleep_duration < 9:
+        return {
+            'range': '7-8 hours',
+            'effects': [
+                'Optimal for adults: Promotes mental clarity, emotional stability, and physical recovery.',
+                'Cognitive enhancement: Improved memory, creativity, and learning capabilities.',
+                'Immune strength: Supports efficient immune response and hormonal balance.',
+                'Stress reduction: Lower cortisol levels improve overall mood and resilience.'
+            ],
+            'tasks': [
+                'Sleep Consistency: Stick to a regular sleep schedule, including on weekends, to reinforce your body clock.',
+                'Balanced Diet: Include magnesium-rich foods (nuts, seeds, spinach) and avoid overeating at dinner.',
+                'Mindfulness Practices: Practice gratitude journaling or mindfulness meditation to foster emotional well-being.',
+                'Activity Balance: Alternate work with breaks to avoid mental burnout.'
+            ]
+        }
+    elif 9 <= sleep_duration < 10:
+        return {
+            'range': '9-10 hours',
+            'effects': [
+                'Recovery benefits: Helps in healing, growth, and recovery from stress or illness, especially for teens and young adults.',
+                'Potential warning sign: In adults, excessive sleep may indicate conditions like depression, sleep apnea, or fatigue disorders.',
+                'Energy dips: Too much sleep can make you feel lethargic and groggy due to disrupted sleep stages.'
+            ],
+            'tasks': [
+                'Light Exercise: Go for a walk or do light aerobics to energize the body.',
+                'Sleep Tracking: Use apps or wearables to monitor sleep patterns and quality.',
+                'Identify Triggers: Pay attention to factors (e.g., stress, diet) that might be extending your sleep duration.',
+                'Social Interaction: Spend time with friends or pursue a hobby to stay active.'
+            ]
+        }
+    else:
+        return {
+            'range': '>10 hours',
+            'effects': [
+                'Lethargy: Prolonged sleep can lead to daytime tiredness and brain fog.',
+                'Health risks: Increased risks of obesity, cardiovascular diseases, diabetes, and stroke.',
+                'Circadian disruption: Over-sleeping disrupts the body’s natural rhythm, leading to irregular energy levels.',
+                'Underlying issues: May point to conditions like hypothyroidism, chronic fatigue syndrome, or depression.'
+            ],
+            'tasks': [
+                'Balanced Routine: Introduce consistent wake-up times to avoid oversleeping.',
+                'Physical Activity: Include moderate exercises like swimming or cycling to boost energy.',
+                'Engage in Hobbies: Stimulate your mind with creative or social activities to counter feelings of lethargy.',
+                'Medical Consultation: Seek advice if prolonged sleep persists and feels unrefreshing.'
+            ]
+        }
+
+def get_tasks_based_on_duration(sleep_duration):
+    if sleep_duration < 4:
+        return {
+            'range': '<4 hours',
+            'effects': [
+                'Severe fatigue: Persistent exhaustion impacts daily functioning.',
+                'Cognitive impairment: Poor decision-making, focus, and memory.',
+                'Immune suppression: Higher susceptibility to colds, flu, and infections.',
+                'Hormonal imbalance: Increased cortisol (stress hormone) and reduced growth hormone production.'
+            ],
+            'tasks': [
+                'Power Naps: Take short naps (20–30 mins).',
+                'Stress Reduction: Practice light stretching or meditation.',
+                'Limit Stimulants: Avoid caffeine and nicotine late at night.',
+                'Hydration: Stay hydrated but avoid large quantities before bed.'
+            ]
+        }
+    elif 4 <= sleep_duration < 6:
+        return {
+            'range': '4-6 hours',
+            'effects': [
+                'Moderate fatigue: Reduced energy levels and productivity.',
+                'Mood swings: Increased irritability and emotional instability.',
+                'Reduced concentration: Difficulty focusing on tasks.',
+                'Weakened immune system: Increased risk of illness.'
+            ],
+            'tasks': [
+                'Low-impact Exercise: Engage in yoga or walking.',
+                'Deep Breathing: Practice stress management techniques.',
+                'Balanced Diet: Eat meals with protein and complex carbohydrates.',
+                'Consistent Bedtime: Establish a regular sleep schedule.'
+            ]
+        }
+    elif 6 <= sleep_duration < 8:
+        return {
+            'range': '6-8 hours',
+            'effects': [
+                'Optimal recovery: Enhanced physical and mental restoration.',
+                'Improved memory: Better cognitive function and focus.',
+                'Stable mood: Balanced emotional state.',
+                'Strong immune system: Lower risk of illness.'
+            ],
+            'tasks': [
+                'Regular Sleep Routine: Maintain consistent sleep habits.',
+                'Moderate Exercise: Include activities like brisk walking or light cardio.',
+                'Sleep Journaling: Reflect on sleep patterns and habits.',
+                'Hydration: Ensure adequate water intake throughout the day.'
+            ]
+        }
+    else:
+        return {
+            'range': '>8 hours',
+            'effects': [
+                'Possible oversleeping effects: Grogginess and lethargy.',
+                'Disrupted sleep cycle: Difficulty falling asleep at night.',
+                'Reduced productivity: Lower energy levels during the day.'
+            ],
+            'tasks': [
+                'Avoid Heavy Meals: Limit large meals before bed.',
+                'Screen Time: Reduce exposure to screens before sleep.',
+                'Sleep Diary: Track sleep patterns and habits.',
+                'Balanced Nutrition: Maintain a healthy diet.'
+            ]
+        }
+
 @csrf_exempt
 @login_required
 def record_sleep_time(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            sleep_time = datetime.strptime(data['sleep_time'], '%H:%M')
-            wake_time = datetime.strptime(data['wake_time'], '%H:%M')
-            
-            if wake_time < sleep_time:
-                wake_time += timedelta(days=1)
-            
-            sleep_duration = wake_time - sleep_time
-            SleepTrack.objects.create(
-                user=request.user,
-                date=datetime.now().date(),
-                sleep_duration=sleep_duration,
-                sleep_quality='Good',  # Placeholder, can be modified
-                sleep_stages='N/A',  # Placeholder, can be modified
-                schedule_id=1  # Placeholder, can be modified
-            )
-            return JsonResponse({'status': 'success'})
+            try:
+                sleep_time = datetime.strptime(data['sleep_time'], '%H:%M').time()
+                wake_time = datetime.strptime(data['wake_time'], '%H:%M').time()
+            except ValueError as ve:
+                return JsonResponse({'status': 'failed', 'error': f"Invalid time format: {ve}"})
+
+            today = datetime.now().date()
+
+            try:
+                # Convert sleep_time and wake_time to datetime objects
+                sleep_datetime = datetime.combine(today, sleep_time)
+                wake_datetime = datetime.combine(today, wake_time)
+
+                # Handle cases where wake time is the next day
+                if wake_datetime < sleep_datetime:
+                    wake_datetime += timedelta(days=1)
+
+                # Calculate sleep duration in hours as a float
+                sleep_duration = (wake_datetime - sleep_datetime).total_seconds() / 3600.0
+            except Exception as calc_error:
+                return JsonResponse({'status': 'failed', 'error': f"Error calculating sleep duration: {calc_error}"})
+
+            try:
+                # Record the sleep tracking data
+                SleepTrack.objects.create(
+                    user=request.user,
+                    date=today,
+                    sleep_duration=sleep_duration,
+                    sleep_quality='Good',  # Placeholder, can be customized
+                    sleep_stages='N/A',  # Placeholder, can be customized
+                    schedule_id=1  # Placeholder, can be customized
+                )
+            except Exception as db_error:
+                return JsonResponse({'status': 'failed', 'error': f"Database error: {db_error}"})
+
+            try:
+                # Fetch tasks based on sleep duration
+                tasks = get_tasks_based_on_duration(sleep_duration)
+
+                # Render the task cards HTML template with the tasks
+                task_cards_html = render_to_string('tracker/task_cards.html', {'effects': tasks})
+            except Exception as render_error:
+                return JsonResponse({'status': 'failed', 'error': f"Error rendering task cards: {render_error}"})
+
+            return JsonResponse({'status': 'success', 'task_cards': task_cards_html})
         except Exception as e:
-            logger.error(f"Error recording sleep time: {e}")
-            return JsonResponse({'status': 'failed', 'error': str(e)})
+            logger.error(f"Unexpected error recording sleep time: {e}")
+            return JsonResponse({'status': 'failed', 'error': f"Unexpected error: {e}"})
+
+    # Return failed status for non-POST requests
     return JsonResponse({'status': 'failed'})
+
